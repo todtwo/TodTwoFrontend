@@ -15,12 +15,16 @@ a {
   box-sizing: border-box;
 }
 
+.account-name {
+  font-weight: bold;
+  font-size: 54px;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
   body {
     color: white;
-    background: black;
+    background: #FFFDF1;
   }
 }
