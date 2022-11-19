@@ -19,8 +19,6 @@ import {
 import { BorrowedDashboardData } from "./TableData";
 import ReturnModal from "./ReturnModal";
 
-import { calcDate } from "../util";
-
 function createData(data: BorrowedDashboardData) {
   return {
     asset: {

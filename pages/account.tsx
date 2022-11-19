@@ -143,7 +143,6 @@ export default function Account() {
                       <BorrowedTable />
                     ) : (
                       <Fragment>
-                        <Button>Collect laterals</Button>
                         <LendTable />
                       </Fragment>
                     )}

@@ -17,6 +17,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   color: "black",
+  padding: "40px",
 };
 
 interface returnModalProps {
@@ -29,8 +30,8 @@ export default function ReturnModal(props: returnModalProps) {
   return (
     <Modal open={props.showModal} onClose={props.handleCancel}>
       <Box sx={style}>
-        <Typography component="h2"> Return</Typography>
-        <Grid container>
+        <Typography variant="h3"> Return</Typography>
+        <Grid container spacing={3}>
           <Grid item xs={6}>
             {" "}
             <img
@@ -41,14 +42,18 @@ export default function ReturnModal(props: returnModalProps) {
 
           <Grid item xs={6}>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid
+                item
+                xs={6}
+                sx={{ fontSize: "25px", fontWeight: "bold", height: "100%" }}
+              >
                 <Box> Name</Box>
                 <Box> Project</Box>
                 <Box>Owner</Box>
                 <Box>Fees</Box>
                 <Box>Collateral</Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} sx={{ fontSize: "25px", height: "100%" }}>
                 <Box> {props.data?.name}</Box>
                 <Box> {props.data?.projectName}</Box>
                 <Box>{props.data?.lender}</Box>
