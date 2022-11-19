@@ -1,4 +1,4 @@
-import { Grid, Box, Paper, Stack } from "@mui/material";
+import { Grid, Box, Paper, Stack, Slide, Grow } from "@mui/material";
 import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
@@ -67,15 +67,27 @@ const Borrow = () => {
       <Stack
         spacing={2}
         paddingX={"15%"}
+        
         paddingTop={"2rem"}
         bgcolor={"secondary"}
       >
-        <Box fontSize={34}>Borrow</Box>
-        <Box fontSize={23}>Offer to loan other users’ NFTs</Box>
+        <Slide direction="down" in={true} timeout={200}>
+          <Box fontSize={34}>Borrow</Box>
+        </Slide>
+        <Slide direction="down" in={true} timeout={200}>
+          <Box fontSize={23}>Offer to loan other users’ NFTs</Box>
+        </Slide>
         <Stack direction={"row"} justifyContent={"space-between"} spacing={2}>
-          <FilterBox filters={filters} setFilters={setFilters}></FilterBox>
-          <BorrowTable></BorrowTable>
-
+          <Grow in={true}>
+            <Box>
+              <FilterBox filters={filters} setFilters={setFilters}></FilterBox>
+            </Box>
+          </Grow>
+          <Grow in={true}>
+            <Box width={"90%"}>
+              <BorrowTable />
+            </Box>
+          </Grow>
         </Stack>
       </Stack>
     </>
