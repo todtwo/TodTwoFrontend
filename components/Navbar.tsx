@@ -48,7 +48,7 @@ function Navbar({ selectedTab = false }: PropTypes) {
           sx={{ paddingY: "2rem", color: "white" }}
           value="Lend"
           label="Lend"
-          onClick={navigate("/lend")}
+          onClick={navigate("/lending")}
         />
         <Tab
           value="Borrow"
