@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box } from "@mui/material";
+import { WhitelistedNftAdresses } from "../../types/WhitelistedNftAdresses";
 enum NftStatus {
   AVAILABLE,
   BEING_BORROWED,
@@ -19,7 +20,7 @@ enum NftStatus {
 interface propTypes {}
 
 function createData(
-  nftAddress: string,
+  nftAddress: WhitelistedNftAdresses,
   nftIdx: string,
   lender: string,
   collateralFee: number,
@@ -28,7 +29,7 @@ function createData(
   deadline: number,
   nftStatus: NftStatus
 ) {
-  const AddressToProjectMap: any = {
+  const AddressToProjectMap = {
     address1: "Project1",
     address2: "Project2",
     address3: "Project3",
