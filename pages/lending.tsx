@@ -65,7 +65,7 @@ const columns = [
   "Lent Price",
 ];
 
-export default function Lend() {
+export default function Lending() {
   const [account, setAccount] = useState<string>("0x123422343");
 
   return (

@@ -70,7 +70,7 @@ function Navbar({ selectedTab = false }: PropTypes) {
           sx={{ paddingY: "2rem", fontSize: "1rem", color: "#FFFDF1" }}
           value="Lend"
           label="Lend"
-          onClick={navigate("/lend")}
+          onClick={navigate("/lending")}
         />
         <Tab
           sx={{ fontSize: "1rem", color: "#FFFDF1" }}
