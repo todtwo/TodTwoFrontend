@@ -3,8 +3,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Button, Grid, Tab, Slide, Tabs, Fade } from "@mui/material";
 
-import BorrowedTable from "../components/accountTable/BorrowedTable";
-import LendTable from "../components/accountTable/LendTable";
+import BorrowedTable from "../components/account/borrow/BorrowedTable";
+import LendTable from "../components/account/lend/LendTable";
 import Navbar from "../components/Navbar";
 
 enum AccountTab {

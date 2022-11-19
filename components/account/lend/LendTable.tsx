@@ -16,9 +16,8 @@ import {
   Fade,
 } from "@mui/material";
 
-import { LentDashboardData } from "./TableData";
+import { LentDashboardData } from "../../types/TableData";
 import CollateralModal from "./CollateralModal";
-import { calcDate } from "../util";
 
 function createData(data: LentDashboardData) {
   return {

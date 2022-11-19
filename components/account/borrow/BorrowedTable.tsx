@@ -16,7 +16,7 @@ import {
   Button,
 } from "@mui/material";
 
-import { BorrowedDashboardData } from "./TableData";
+import { BorrowedDashboardData } from "../../types/TableData";
 import ReturnModal from "./ReturnModal";
 
 function createData(data: BorrowedDashboardData) {
