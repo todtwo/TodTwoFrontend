@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import { Box } from "@mui/system";
-import { Button, Grid, Tab, Slide, Tabs } from "@mui/material";
+import { Button, Grid, Tab, Slide, Tabs, Fade } from "@mui/material";
 
 import BorrowedTable from "../components/accountTable/BorrowedTable";
 import LendTable from "../components/accountTable/LendTable";
@@ -14,9 +14,9 @@ enum AccountTab {
 
 export default function Account() {
   const [account, setAccount] = useState<string>("0x123422343");
-  const [selectedTab, setSelectedTab] = useState<AccountTab>(
-    AccountTab.borrowed
-  );
+  const [selectedTab, setSelectedTab] = useState<AccountTab>();
+
+  useEffect(() => setSelectedTab(AccountTab.borrowed), []);
 
   const tabChange = (event: React.SyntheticEvent, newValue: AccountTab) => {
     setSelectedTab(newValue);

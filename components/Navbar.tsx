@@ -33,7 +33,7 @@ function Navbar({ selectedTab = false }: PropTypes) {
       sx={{
         fontSize: "2rem",
         paddingX: "15%",
-        backgroundColor: "#c5c5c5",
+        backgroundColor: "#495483",
       }}
     >
       <Box onClick={navigate("/")}>TODTWO</Box>
@@ -45,14 +45,29 @@ function Navbar({ selectedTab = false }: PropTypes) {
         scrollButtons="auto"
       >
         <Tab
-          sx={{ paddingY: "2rem" }}
+          sx={{ paddingY: "2rem", color: "white" }}
           value="Lend"
           label="Lend"
           onClick={navigate("/lend")}
         />
-        <Tab value="Borrow" label="Borrow" onClick={navigate("/borrow")}/>
-        <Tab value="About" label="About" onClick={navigate("/about")}/>
-        <Tab value="Account" label="Account" onClick={navigate("/account")}/>
+        <Tab
+          value="Borrow"
+          label="Borrow"
+          onClick={navigate("/borrow")}
+          sx={{ color: "white" }}
+        />
+        <Tab
+          value="About"
+          label="About"
+          onClick={navigate("/about")}
+          sx={{ color: "white" }}
+        />
+        <Tab
+          value="Account"
+          label="Account"
+          onClick={navigate("/account")}
+          sx={{ color: "white" }}
+        />
       </Tabs>
     </Stack>
   );
