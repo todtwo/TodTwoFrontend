@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 
 import { Box } from "@mui/system";
 import { Button, Grid, Tab, Slide, Tabs, Fade } from "@mui/material";
@@ -6,6 +6,7 @@ import { Button, Grid, Tab, Slide, Tabs, Fade } from "@mui/material";
 import BorrowedTable from "../components/account/borrow/BorrowedTable";
 import LendTable from "../components/account/lend/LendTable";
 import Navbar from "../components/Navbar";
+import { EthContext } from "../context/ethContext";
 
 enum AccountTab {
   lent = "Lent",
@@ -16,7 +17,21 @@ export default function Account() {
   const [account, setAccount] = useState<string>("0x123422343");
   const [selectedTab, setSelectedTab] = useState<AccountTab>();
 
-  useEffect(() => setSelectedTab(AccountTab.borrowed), []);
+  const {
+    provider,
+    defaultAccount,
+    setDefaultAccount,
+    connectHandle,
+    contract,
+  } = useContext(EthContext);
+
+  useEffect(() => {
+    setSelectedTab(AccountTab.borrowed);
+  }, []);
+
+  useEffect(() => {
+    setAccount(defaultAccount);
+  }, [defaultAccount]);
 
   const tabChange = (event: React.SyntheticEvent, newValue: AccountTab) => {
     setSelectedTab(newValue);

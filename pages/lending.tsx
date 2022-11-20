@@ -16,6 +16,8 @@ import {
 
 import Navbar from "../components/Navbar";
 import { LentDashboardData } from "../components/types/TableData";
+import { GetNFTsByContract } from "../utils/GetNFTsByContract";
+import router from "next/router";
 
 function createData(data: LentDashboardData) {
   return {
@@ -68,6 +70,12 @@ const columns = [
 export default function Lending() {
   const [account, setAccount] = useState<string>("0x123422343");
 
+  useEffect(() => {
+    if (account)
+      var x = GetNFTsByContract("0x13502Ea6F6D14f00025a3AdDe02BFf050be24532");
+    console.log(x);
+  }, [account]);
+
   return (
     <>
       <main>
@@ -93,7 +101,13 @@ export default function Lending() {
           }}
         >
           Current Listing
-          <Button>List new NFT</Button>
+          <Button
+            onClick={() => {
+              router.push(`/new-lending`);
+            }}
+          >
+            List new NFT
+          </Button>
           <Fade in={true} timeout={500}>
             <TableContainer component={Paper} sx={{ height: "60vh" }}>
               <Table

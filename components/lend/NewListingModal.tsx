@@ -24,7 +24,7 @@ interface CollateralModalProps {
   totalCollaterals: number;
 }
 
-export default function ListNFTModal(props: CollateralModalProps) {
+export default function NewListingModal(props: CollateralModalProps) {
   return (
     <Modal open={props.showModal} onClose={props.handleCancel}>
       <Box sx={style}>
