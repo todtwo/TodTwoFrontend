@@ -11,12 +11,13 @@ const EthContextProvider = ({ children }) => {
   const [ClarkTwoContract, setClarkTwoContract] = useState(null);
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
-
+  
   const updateEthers = () => {
     let tmpProvider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(tmpProvider);
     let tmpSigner = tmpProvider.getSigner();
     setSigner(tmpSigner);
+
   };
 
   const connectHandler = () => {
@@ -24,7 +25,12 @@ const EthContextProvider = ({ children }) => {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
-          setDefaultAccount(result[0]);
+          console.log(result)
+          if (result.length !== 0) {
+            setDefaultAccount(result[0]);
+          } else {
+            setDefaultAccount(null);
+          }
           setIsReady(true);
         });
     } else {
@@ -32,6 +38,11 @@ const EthContextProvider = ({ children }) => {
     }
   };
 
+  const AddressToProjectMap = {
+    address1: "Project1",
+    address2: "Project2",
+    address3: "Project3",
+  };
   return (
     <EthContext.Provider
       value={{
@@ -51,6 +62,7 @@ const EthContextProvider = ({ children }) => {
         updateEthers,
         isReady,
         setIsReady,
+        AddressToProjectMap
       }}
     >
       {children}

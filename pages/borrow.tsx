@@ -65,7 +65,7 @@ const Borrow = () => {
   }, [isReady, router, defaultAccount]);
 
   return (
-    <Box bgcolor={"secondary.main"}>
+    <Box height="100vh" bgcolor={"secondary.main"}>
       <Navbar selectedTab="Borrow" />
 
       <Stack
@@ -73,6 +73,7 @@ const Borrow = () => {
         paddingX={"15%"}
         paddingTop={"2rem"}
         bgcolor={"secondary"}
+        height="100%"
       >
         <Slide direction="down" in={true} timeout={200}>
           <Box fontSize={34}>Borrow</Box>
