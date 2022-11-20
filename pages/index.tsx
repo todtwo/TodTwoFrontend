@@ -1,8 +1,45 @@
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import Image from "next/image";
+import { Box, Stack } from "@mui/system";
+import { useContext, useEffect } from "react";
+import { EthContext } from "../context/ethContext";
+import { Button } from "@mui/material";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const {
+    provider,
+    defaultAccount,
+    setDefaultAccount,
+    connectHandler,
+    updateEthers,
+    isReady,
+  } = useContext(EthContext);
+  const router = useRouter()
+  const onAccountChangedHandler = (accounts: Array<string>) => {
+    if (accounts.length !== 0) {
+      setDefaultAccount(accounts[0]);
+    } else {
+      setDefaultAccount(null);
+    }
+  };
+
+  useEffect(() => {
+    connectHandler();
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", onAccountChangedHandler);
+    }
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          onAccountChangedHandler
+        );
+      }
+    };
+  });
   return (
     <>
       <Head>
@@ -11,11 +48,157 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <Box bgcolor={"secondary.main"} height="100vh">
         <Navbar />
-      </main>
-
-      <footer></footer>
+        <Stack
+          spacing={2}
+          marginX={"15%"}
+          marginTop={"3rem"}
+          position="relative"
+          height="80%"
+        >
+          <Stack
+            justifyContent={"space-between"}
+            direction="row"
+            position={"relative"}
+            height="70%"
+          >
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/px-veCZJPhJ5zlfWuY0a7qtPVWiHPtniKbGkrA7AXCu06DweUlFUZlSHlv0BCoDsY4H6zS62R-0Sh0NpRgT3Jkf-2OmM0rEGBvFXWg?auto=format&w=400"
+                }
+                alt="landing"
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+                fill
+              ></Image>
+            </Box>
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/_w3jKExe2BwoVSW8GIvLY4_Vn-h4TcjfPXA9yWx5NkYOJPpCbcAsKztYo0bvsz61Bodr4QeutCqXEBmOzJAgestbIucklehsOnTL?auto=format&w=400"
+                }
+                alt="landing"
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+                fill
+              ></Image>
+            </Box>
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/BzcR56zyba51PrgMTJ1HJwPPVyDd3JwTXEVx9Pm54fAqxb7imrjlQRDTj21KGrSlDxrMpsW25MRMSzYoQwVN2LMGIrHcmlzziok8IoU?auto=format&w=400"
+                }
+                alt="landing"
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+                fill
+              ></Image>
+            </Box>
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/ZFFvxCcPX28StfxYOH0Tu_XGsi61D4P7M2YJM1krILdOzFzLG2z5LiP0Rvg_tJoFR1XgsSzvSRpTg83oCJ7rN9kYfZXp7PASnfE9yw?auto=format&w=400"
+                }
+                alt="landing"
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+                fill
+              ></Image>
+            </Box>
+          </Stack>
+          <Stack
+            justifyContent={"space-around"}
+            direction="row"
+            position={"relative"}
+            height="70%"
+          >
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/0495gK_cDKbXjI-W_Hj0_5AJCR85k4fkhWF9muWW17YQKPcjTyNjoFy7Mr8VnVgsvXmGaac_tv2Nyz59TTXgGwFfVfhwp6CGLYAI9Tg?auto=format&w=400"
+                }
+                alt="landing"
+                fill
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+              ></Image>
+            </Box>
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/UIG4AIJ5YybdNhuBMu3xqVT39YT6m5w7CA6qeTv9ml3gWAr55qfvSHzJIarpMhrsDlZyol3QK5kgtqnd_8GD2-0OLXTumPAjQQ_K8Yw?auto=format&w=400"
+                }
+                alt="landing"
+                fill
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+              ></Image>
+            </Box>
+            <Box position={"relative"} width={"20%"}>
+              <Image
+                src={
+                  "https://i.seadn.io/gae/ybIdwh9T8YGZ5vZXKKlRPM5W2S1Avu4a1CO391vjZzkDgR4HJseEdVTMwoyIDpDCmiDCdUCPbitG_teNxkruuDX2DGjEMlBaKNN5sQ?auto=format&w=400"
+                }
+                alt="landing"
+                fill
+                style={{
+                  objectFit: "cover",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
+              ></Image>
+            </Box>
+          </Stack>
+          <Stack
+            paddingTop={"3rem"}
+            direction="row"
+            justifyContent={"space-between"}
+            alignContent={"center"}
+            alignItems="center"
+          >
+            <Box fontSize={50} width={"40%"}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </Box>
+            <Stack direction="row" width={"30%"} justifyContent="space-around">
+              <Button
+                sx={{ padding: "0.5rem 2.5rem", fontSize: "1.3rem" ,boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)"}}
+                variant="contained"
+                color="info"
+                disabled={!defaultAccount}
+                onClick={()=>{
+                  router.push("/lend")
+                }}
+              >
+                Lend
+              </Button>
+              <Button
+                sx={{ padding: "0.5rem 1rem", fontSize: "1.3rem" ,boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)"}}
+                variant="contained"
+                color="info"
+                disabled={!defaultAccount}
+                onClick={()=>{
+                  router.push("/borrow")
+                }}
+              >
+                Borrow
+              </Button>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Box>
     </>
   );
 }
