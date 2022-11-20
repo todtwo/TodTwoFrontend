@@ -1,16 +1,15 @@
 import { Box, Button, Stack } from "@mui/material";
 import { ethers } from "ethers";
-import React from "react";
+import Image from "next/image";
+import React, { useContext } from "react";
+import { EthContext } from "../../context/ethContext";
 import { NftDetails } from "../../types/NftDetails";
+
 interface propTypes {
   nftDetails: NftDetails;
 }
 const BigNumber = ethers.BigNumber;
-const AddressToProjectMap = {
-  address1: "Project1",
-  address2: "Project2",
-  address3: "Project3",
-};
+
 const NftStatusToStatusName = {
   0: "Available",
   1: "BEING_BORROWED",
@@ -18,6 +17,7 @@ const NftStatusToStatusName = {
 };
 
 const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
+  const { AddressToProjectMap } = useContext(EthContext)
   return (
     <Box
       justifyContent={"center"}
@@ -35,8 +35,20 @@ const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
         justifyContent={"space-around"}
         alignItems={"center"}
       >
-        <Box bgcolor={"#ffffff"} width={"20vw"} height={"20vw"}>
-          picture
+        <Box
+          position={"relative"}
+          bgcolor={"#ffffff"}
+          width={"20vw"}
+          height={"20vw"}
+        >
+          <Image
+            fill
+            sizes="(max-width: 20vw) 20vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+            src="https://ipfs.io/ipfs/QmWUwXcYctHTpqjHZKKKXF6KyxQdoMxtak8SWFhW2TmSuS/1.jpg"
+            alt="NFT Photo"
+          />
         </Box>
         <Box width={"60%"} height={"80%"}>
           <Stack
@@ -66,7 +78,7 @@ const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
               <Box>{NftStatusToStatusName[nftDetails.nftStatus]}</Box>
             </Stack>
           </Stack>
-          <Box paddingY={"1rem"}textAlign={"center"} height={"5vh"}>
+          <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>
             <Button color="success" variant="contained">
               Borrow
             </Button>

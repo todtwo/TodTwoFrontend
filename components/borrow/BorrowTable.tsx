@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,40 +11,32 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box } from "@mui/material";
 import { WhitelistedNftAdresses } from "../../types/WhitelistedNftAdresses";
-enum NftStatus {
-  AVAILABLE,
-  BEING_BORROWED,
-  DELETED,
-}
+import { NftStatus } from "../../types/NftStatus";
+import { EthContext } from "../../context/ethContext";
 
 interface propTypes {}
 
-function createData(
-  nftAddress: WhitelistedNftAdresses,
-  nftIdx: string,
-  lender: string,
-  collateralFee: number,
-  borrowFee: number,
-  lendingDuration: number,
-  deadline: number,
-  nftStatus: NftStatus
-) {
-  const AddressToProjectMap = {
-    address1: "Project1",
-    address2: "Project2",
-    address3: "Project3",
-  };
-  const projectName: string = AddressToProjectMap[nftAddress];
-  const terms: string = `${ethers.utils.formatEther(
-    borrowFee
-  )}Eth/${lendingDuration}Day`;
-  const collateral: string = `${ethers.utils.formatEther(collateralFee)}ETH`;
-  const imgPath: string = "/vercel.svg"
-  return { nftIdx, projectName, lender, terms, collateral };
-}
-
 const BorrowTable = ({}: propTypes) => {
   const router = useRouter();
+  const { AddressToProjectMap } = useContext(EthContext);
+  const createData = (
+    nftAddress: WhitelistedNftAdresses,
+    nftIdx: string,
+    lender: string,
+    collateralFee: number,
+    borrowFee: number,
+    lendingDuration: number,
+    deadline: number,
+    nftStatus: NftStatus
+  ) => {
+    const projectName: string = AddressToProjectMap[nftAddress];
+    const terms: string = `${ethers.utils.formatEther(
+      borrowFee
+    )}Eth/${lendingDuration}Day`;
+    const collateral: string = `${ethers.utils.formatEther(collateralFee)}ETH`;
+    const imgPath: string = "/vercel.svg";
+    return { nftIdx, projectName, lender, terms, collateral };
+  };
   const [rows, setRows] = useState([
     createData(
       "address1",
@@ -159,18 +151,24 @@ const BorrowTable = ({}: propTypes) => {
   ]);
   return (
     <Box>
-      <TableContainer sx={{ height: "65vh" }} component={Paper}>
+      <TableContainer
+        sx={{ height: "65vh", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
+        component={Paper}
+      >
         <Table
           stickyHeader
           sx={{
-            
             bgcolor: "secondary.dark",
             height: "max-content",
-            boxShadow: "4px 8px 8px rgba(0, 0, 0, 0.25)",
           }}
         >
           <TableHead>
-            <TableRow sx={{ fontSize: 30 }}>
+            <TableRow
+              sx={{
+                fontSize: 30,
+                boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)",
+              }}
+            >
               <TableCell align="center" sx={{ bgcolor: "secondary.dark" }}>
                 Index
               </TableCell>
