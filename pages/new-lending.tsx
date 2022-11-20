@@ -38,7 +38,7 @@ export default function NewLending() {
     nft3checked: false,
   });
   const [data, setData] = useState<NFTData[]>([]);
-  const [selectedNFT, setSelectedNFT] = useState<NFTData>(null);
+  const [selectedNFT, setSelectedNFT] = useState<NFTData | null>(null);
   const {
     provider,
     defaultAccount,
@@ -46,6 +46,7 @@ export default function NewLending() {
     connectHandle,
     contract,
   } = useContext(EthContext);
+  const [listed, setListed] = useState<any[]>([]);
 
   useEffect(() => {
     setAccount(defaultAccount);
@@ -62,7 +63,18 @@ export default function NewLending() {
     setShowModal(true);
   }
 
+  function checkAlreadyListed(obj: {
+    token_id: number;
+    address: string;
+  }): boolean {
+    return listed.includes(obj);
+  }
+
   function getAllOwnedNFTs(owner: String) {
+    //TODO : Filter only not listed
+    let listedNFTS;
+    // const listedNFTS = contract.getAllAvailableNFTs().map((e) => return {token_id : e.nftTokenId, address: e.nftAddress });
+
     Promise.all(
       whiteListed.map((contract) => {
         return GetNFTsByContract(contract);
@@ -76,7 +88,11 @@ export default function NewLending() {
           .reduce((a, b) => a.concat(b))
           .reduce((a, b) => {
             if (
-              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase()
+              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase() &&
+              !checkAlreadyListed({
+                token_id: b.token_id,
+                address: b.contract_address,
+              })
             ) {
               var x: NFTData = {
                 previewImgUrl: b.previews.image_small_url,
@@ -84,6 +100,8 @@ export default function NewLending() {
                 name: b.name,
                 fullImgUrl: b.previews.image_large_url,
                 description: b.description,
+                tokenId: b.token_id,
+                address: b.contract_address,
               };
               a.push(x);
             }

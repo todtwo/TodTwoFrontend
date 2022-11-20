@@ -7,6 +7,7 @@ import BorrowedTable from "../components/account/borrow/BorrowedTable";
 import LendTable from "../components/account/lend/LendTable";
 import Navbar from "../components/Navbar";
 import { EthContext } from "../context/ethContext";
+import { NftDetails } from "../types/NftDetails";
 
 enum AccountTab {
   lent = "Lent",
@@ -16,6 +17,8 @@ enum AccountTab {
 export default function Account() {
   const [account, setAccount] = useState<string>("0x123422343");
   const [selectedTab, setSelectedTab] = useState<AccountTab>();
+  const [borrowed, setBorrowed] = useState<NftDetails[]>([]);
+  const [lent, setLent] = useState<NftDetails[]>([]);
 
   const {
     provider,
@@ -24,6 +27,10 @@ export default function Account() {
     connectHandle,
     contract,
   } = useContext(EthContext);
+
+  function callData() {
+    //TODO :GET BORROWED & LENT
+  }
 
   useEffect(() => {
     setSelectedTab(AccountTab.borrowed);

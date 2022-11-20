@@ -4,6 +4,8 @@ interface NFTData {
   projectName: string;
   fullImgUrl: string;
   description: string;
+  tokenId: number;
+  address: string;
 }
 
 export default NFTData;

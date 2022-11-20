@@ -67,15 +67,12 @@ const columns = [
   "Lent Price",
 ];
 
+function getListedNFTs(owner: string): LentDashboardData[] {
+  //contract.vail.filter((owner == =owner))
+  return [];
+}
+
 export default function Lending() {
-  const [account, setAccount] = useState<string>("0x123422343");
-
-  useEffect(() => {
-    if (account)
-      var x = GetNFTsByContract("0x13502Ea6F6D14f00025a3AdDe02BFf050be24532");
-    console.log(x);
-  }, [account]);
-
   return (
     <>
       <main>
