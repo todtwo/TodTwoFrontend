@@ -10,7 +10,7 @@ import { NftStatus } from "../../types/NftStatus";
 const BorrowDetails = () => {
   const router = useRouter();
   const { nftLPListIdx } = router.query;
-  const { provider, defaultAccount, setDefaultAccount, connectHandler } =
+  const { provider, defaultAccount, setDefaultAccount, connectHandler, isReady } =
     useContext(EthContext);
   const getNftDetails = (nftLPListIdx: string | string[] | undefined) => {
     const mock : NftDetails = {
@@ -27,28 +27,18 @@ const BorrowDetails = () => {
     return mock;
   };
   const nftDetails = getNftDetails(nftLPListIdx)
-  const checkConnection = () => {
-    if (window.ethereum) {
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((result: Array<string>) => {
-          setDefaultAccount(result[0]);
-        });
-    } else {
-      alert("install MetaMask");
-    }
-  };
 
   const onAccountChangedHandler = (accounts: Array<string>) => {
     if (accounts.length > 0) {
       setDefaultAccount(accounts[0]);
     } else {
       setDefaultAccount(null);
+      
     }
   };
-
+  
   useEffect(() => {
-    checkConnection();
+    connectHandler()
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", onAccountChangedHandler);
     }
@@ -61,6 +51,12 @@ const BorrowDetails = () => {
       }
     };
   });
+  useEffect(() => {                                        // check account connection
+    if (isReady && router.isReady && !defaultAccount) {
+      router.push("/");
+    }
+  }, [isReady, router, defaultAccount]);
+  
   if (!router.isReady) {
     return <Box>Loading</Box>
   }

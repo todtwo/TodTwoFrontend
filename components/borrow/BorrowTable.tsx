@@ -159,18 +159,18 @@ const BorrowTable = ({}: propTypes) => {
   ]);
   return (
     <Box>
-      <TableContainer sx={{ height: "65vh" }} component={Paper}>
+      <TableContainer sx={{ height: "65vh" ,
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",}} component={Paper}>
         <Table
           stickyHeader
           sx={{
             
             bgcolor: "secondary.dark",
-            height: "max-content",
-            boxShadow: "4px 8px 8px rgba(0, 0, 0, 0.25)",
+            height: "max-content"
           }}
         >
           <TableHead>
-            <TableRow sx={{ fontSize: 30 }}>
+            <TableRow sx={{ fontSize: 30, boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)"}}>
               <TableCell align="center" sx={{ bgcolor: "secondary.dark" }}>
                 Index
               </TableCell>

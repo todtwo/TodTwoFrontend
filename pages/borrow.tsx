@@ -11,6 +11,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { filterCheckBoxType } from "../types/filterCheckBoxType";
 import FilterBox from "../components/borrow/FilterBox";
 import BorrowTable from "../components/borrow/BorrowTable";
+import { useRouter } from "next/router";
 declare global {
   interface Window {
     ethereum?: any;
@@ -18,24 +19,21 @@ declare global {
 }
 
 const Borrow = () => {
-  const { provider, defaultAccount, setDefaultAccount, connectHandler } =
-    useContext(EthContext);
+  const {
+    provider,
+    defaultAccount,
+    setDefaultAccount,
+    connectHandler,
+    updateEthers,
+    isReady,
+    
+  } = useContext(EthContext);
   const [filters, setFilters] = useState<filterCheckBoxType>({
     nft1checked: false,
     nft2checked: false,
     nft3checked: false,
   });
-  const checkConnection = () => {
-    if (window.ethereum) {
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((result: Array<string>) => {
-          setDefaultAccount(result[0]);
-        });
-    } else {
-      alert("install MetaMask");
-    }
-  };
+  const router = useRouter();
 
   const onAccountChangedHandler = (accounts: Array<string>) => {
     if (accounts.length > 0) {
@@ -46,7 +44,7 @@ const Borrow = () => {
   };
 
   useEffect(() => {
-    checkConnection();
+    connectHandler();
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", onAccountChangedHandler);
     }
@@ -60,14 +58,19 @@ const Borrow = () => {
     };
   });
 
+  useEffect(() => {                                        // check account connection
+    if (isReady && router.isReady && !defaultAccount) {
+      router.push("/");
+    }
+  }, [isReady, router, defaultAccount]);
+
   return (
-    <>
+    <Box bgcolor={"secondary.main"}>
       <Navbar selectedTab="Borrow" />
 
       <Stack
         spacing={2}
         paddingX={"15%"}
-        
         paddingTop={"2rem"}
         bgcolor={"secondary"}
       >
@@ -90,7 +93,7 @@ const Borrow = () => {
           </Grow>
         </Stack>
       </Stack>
-    </>
+    </Box>
   );
 };
 

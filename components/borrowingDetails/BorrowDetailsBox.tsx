@@ -1,5 +1,6 @@
 import { Box, Button, Stack } from "@mui/material";
 import { ethers } from "ethers";
+import Image from "next/image";
 import React from "react";
 import { NftDetails } from "../../types/NftDetails";
 interface propTypes {
@@ -36,7 +37,7 @@ const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
         alignItems={"center"}
       >
         <Box bgcolor={"#ffffff"} width={"20vw"} height={"20vw"}>
-          picture
+          <Image width={300} height={300} src="https://ipfs.io/ipfs/QmWUwXcYctHTpqjHZKKKXF6KyxQdoMxtak8SWFhW2TmSuS/1.jpg" alt="NFT Photo"/>
         </Box>
         <Box width={"60%"} height={"80%"}>
           <Stack
