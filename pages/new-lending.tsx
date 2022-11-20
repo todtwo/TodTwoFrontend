@@ -1,73 +1,39 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import Image from "next/image";
+import axios from "axios";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Box,
-  Button,
-  Fade,
-  Grid,
-} from "@mui/material";
+import { Box, Button, Fade, Grid } from "@mui/material";
 
 import Navbar from "../components/Navbar";
-import { LentDashboardData } from "../components/types/TableData";
-import { GetNFTsByContract } from "../utils/GetNFTsByContract";
 import FilterBox from "../components/common/FilterBox";
 import { filterCheckBoxType } from "../types/filterCheckBoxType";
+import { EthContext } from "../context/ethContext";
 
-function createData(data: LentDashboardData) {
-  return {
-    asset: {
-      name: data.name,
-      imgUrl: data.imgUrl,
-      projectName: data.projectName,
-    },
-    borrower: data.borrower,
-    duration: data.duration,
-    due: data.due,
-    collateral: data.collateral,
-    lentPrice: data.lentPrice,
-  };
+const whiteListed = [
+  "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532",
+  "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
+  "0x40e3b499A062153158C90572f378132Bab6AB07B",
+];
+
+interface NFTData {
+  previewImgUrl: string;
+  name: string;
+  projectName: string;
+  fullImgUrl: string;
+  description: string;
 }
 
-const mockData: LentDashboardData = {
-  name: "NFT NAME",
-  imgUrl:
-    "/Users/hataipatsupanunt/cpcu/yr4_1/blockchain/TodTwoFrontend/public/test.jpg",
-  projectName: "project Name",
-  borrower: "0x1233444",
-  due: "2019-20-05",
-  duration: 1,
-  collateral: 2,
-  lentPrice: 3,
-};
-const rows = [
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-];
-
-const columns = [
-  "Asset",
-  "Lender",
-  "Due (Duration)",
-  "Collateral",
-  "Lent Price",
-];
+function GetNFTsByContract(contract: String) {
+  return axios.get(
+    `https://api-testnets.simplehash.com/api/v0/nfts/ethereum-goerli/${contract}`,
+    {
+      headers: {
+        "X-API-KEY":
+          "wattanatawee_sk_c6b59475-e27f-46b8-b506-57bb41e67f85_82tcdyh0wq6fyfm8",
+      },
+    }
+  );
+}
 
 export default function NewLending() {
   const [account, setAccount] = useState<string>("0x123422343");
@@ -76,12 +42,55 @@ export default function NewLending() {
     nft2checked: false,
     nft3checked: false,
   });
+  const [data, setData] = useState<NFTData[]>([]);
+  const {
+    provider,
+    defaultAccount,
+    setDefaultAccount,
+    connectHandle,
+    contract,
+  } = useContext(EthContext);
 
   useEffect(() => {
-    if (account)
-      var x = GetNFTsByContract("0x13502Ea6F6D14f00025a3AdDe02BFf050be24532");
-    console.log(x);
+    setAccount(defaultAccount);
+  }, [defaultAccount]);
+
+  useEffect(() => {
+    if (account) {
+      getAllOwnedNFTs(account);
+    }
   }, [account]);
+
+  function getAllOwnedNFTs(owner: String) {
+    Promise.all(
+      whiteListed.map((contract) => {
+        return GetNFTsByContract(contract);
+      })
+    ).then((results) => {
+      setData(
+        results
+          .map((r) => {
+            return r.data.nfts;
+          })
+          .reduce((a, b) => a.concat(b))
+          .reduce((a, b) => {
+            if (
+              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase()
+            ) {
+              var x: NFTData = {
+                previewImgUrl: b.previews.image_small_url,
+                projectName: b.collection.name,
+                name: b.name,
+                fullImgUrl: b.previews.image_large_url,
+                description: b.description,
+              };
+              a.push(x);
+            }
+            return a;
+          }, [])
+      );
+    });
+  }
 
   return (
     <>
@@ -119,13 +128,23 @@ export default function NewLending() {
                 flexDirection: "row",
                 p: 1,
                 m: 1,
-                // bgcolor: "background.paper",
                 borderRadius: 1,
               }}
             >
-              <Box>NFT1</Box>
-              <Box>NFT1</Box>
-              <Box>NFT1</Box>
+              {data.map((d, i) => {
+                return (
+                  <Box key={i} sx={{ textAlign: "center" }}>
+                    <Image
+                      src={d.previewImgUrl}
+                      width={200}
+                      height={200}
+                      alt={d.name}
+                    />
+                    <Box> {d.name}</Box>
+                    <Box> {d.projectName}</Box>
+                  </Box>
+                );
+              })}
             </Box>
           </Grid>{" "}
         </Grid>
