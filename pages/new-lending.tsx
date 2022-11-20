@@ -8,20 +8,14 @@ import Navbar from "../components/Navbar";
 import FilterBox from "../components/common/FilterBox";
 import { filterCheckBoxType } from "../types/filterCheckBoxType";
 import { EthContext } from "../context/ethContext";
+import NFTData from "../types/NftData";
+import LendModal from "../components/lend/LendModal";
 
 const whiteListed = [
   "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532",
   "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
   "0x40e3b499A062153158C90572f378132Bab6AB07B",
 ];
-
-interface NFTData {
-  previewImgUrl: string;
-  name: string;
-  projectName: string;
-  fullImgUrl: string;
-  description: string;
-}
 
 function GetNFTsByContract(contract: String) {
   return axios.get(
@@ -36,6 +30,7 @@ function GetNFTsByContract(contract: String) {
 }
 
 export default function NewLending() {
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [account, setAccount] = useState<string>("0x123422343");
   const [filters, setFilters] = useState<filterCheckBoxType>({
     nft1checked: false,
@@ -43,6 +38,7 @@ export default function NewLending() {
     nft3checked: false,
   });
   const [data, setData] = useState<NFTData[]>([]);
+  const [selectedNFT, setSelectedNFT] = useState<NFTData>(null);
   const {
     provider,
     defaultAccount,
@@ -60,6 +56,11 @@ export default function NewLending() {
       getAllOwnedNFTs(account);
     }
   }, [account]);
+
+  function onClickNFT(i: number) {
+    setSelectedNFT(data[i]);
+    setShowModal(true);
+  }
 
   function getAllOwnedNFTs(owner: String) {
     Promise.all(
@@ -107,7 +108,7 @@ export default function NewLending() {
         }}
       >
         <h2>Lend</h2>
-        <h3>Select your NFT to loean</h3>
+        <h3>Select your NFT to loan</h3>
         <Box
           sx={{
             minHeight: "80%",
@@ -133,7 +134,11 @@ export default function NewLending() {
             >
               {data.map((d, i) => {
                 return (
-                  <Box key={i} sx={{ textAlign: "center" }}>
+                  <Box
+                    key={i}
+                    sx={{ textAlign: "center" }}
+                    onClick={() => onClickNFT(i)}
+                  >
                     <Image
                       src={d.previewImgUrl}
                       width={200}
@@ -148,6 +153,13 @@ export default function NewLending() {
             </Box>
           </Grid>{" "}
         </Grid>
+        {showModal && (
+          <LendModal
+            data={selectedNFT}
+            showModal={showModal}
+            handleCancel={() => setShowModal(false)}
+          />
+        )}
       </Box>
     </>
   );
