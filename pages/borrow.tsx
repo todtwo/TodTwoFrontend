@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { styled } from "@mui/material/styles";
-import { EthContext } from "../context/ethContext";
+import { EthContext } from "../context/EthContext";
 import { Container } from "@mui/system";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";

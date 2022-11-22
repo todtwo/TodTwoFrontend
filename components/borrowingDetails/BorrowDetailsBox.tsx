@@ -2,7 +2,7 @@ import { Box, Button, Stack } from "@mui/material";
 import { ethers } from "ethers";
 import Image from "next/image";
 import React, { useContext } from "react";
-import { EthContext } from "../../context/ethContext";
+import { EthContext } from "../../context/EthContext";
 import { NftDetails } from "../../types/NftDetails";
 
 interface propTypes {

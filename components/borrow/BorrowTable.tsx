@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { Box } from "@mui/material";
 import { WhitelistedNftAdresses } from "../../types/WhitelistedNftAdresses";
 import { NftStatus } from "../../types/NftStatus";
-import { EthContext } from "../../context/ethContext";
+import { EthContext } from "../../context/EthContext";
 
 interface propTypes {}
 

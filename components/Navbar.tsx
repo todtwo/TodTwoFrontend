@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Tab, Tabs } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { MouseEventHandler, useContext, useState } from "react";
-import { EthContext } from "../context/ethContext";
+import { EthContext } from "../context/EthContext";
 
 interface PropTypes {
   selectedTab?: boolean | string;
@@ -78,12 +78,12 @@ function Navbar({ selectedTab = false }: PropTypes) {
           label="Borrow"
           onClick={navigate("/borrow")}
         />
-        <Tab
+        {/* <Tab
           sx={{ fontSize: "1rem", color: "#FFFDF1" }}
           value="About"
           label="About"
           onClick={navigate("/about")}
-        />
+        /> */}
         {defaultAccount ? (
           <Tab
             sx={{ fontSize: "1rem", color: "#FFFDF1" }}

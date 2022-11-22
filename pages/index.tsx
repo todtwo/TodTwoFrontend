@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Box, Stack } from "@mui/system";
 import { useContext, useEffect } from "react";
-import { EthContext } from "../context/ethContext";
+import { EthContext } from "../context/EthContext";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -117,7 +117,7 @@ export default function Home() {
             </Box>
           </Stack>
           <Stack
-            justifyContent={"space-around"}
+            justifyContent={"space-evenly"}
             direction="row"
             position={"relative"}
             height="70%"

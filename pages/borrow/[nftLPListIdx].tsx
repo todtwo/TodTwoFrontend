@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import BorrowDetailsBox from "../../components/borrowingDetails/BorrowDetailsBox";
 import Navbar from "../../components/Navbar";
-import { EthContext } from "../../context/ethContext";
+import { EthContext } from "../../context/EthContext";
 import { NftDetails } from "../../types/NftDetails";
 import { NftStatus } from "../../types/NftStatus";
 
