@@ -12,18 +12,17 @@ import LendModal from "../components/lend/LendModal";
 import { EthContext } from "../context/EthContext";
 import { useRouter } from "next/router";
 import { GetNFTDetailsV2, mergeObject } from "../utils/GetNFTDetails";
-import { StrikethroughSTwoTone, YardRounded } from "@mui/icons-material";
 
 const nfts = [
   { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 0 },
   { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 1 },
   { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 2 },
-  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 0 },
-  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 1 },
-  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 2 },
-  // { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 0 },
-   { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 1 },
-   { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 2 },
+  { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 0 },
+  { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 1 },
+  { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 2 },
+  { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 0 },
+  { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 1 },
+  { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 2 },
 ];
 
 function GetNFTsByContract(contract: String, tokenId: number) {
