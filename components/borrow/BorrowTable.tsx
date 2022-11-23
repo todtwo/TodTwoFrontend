@@ -61,7 +61,8 @@ const BorrowTable = ({ nftDetailsList, filters }: propTypes) => {
   
   const rows = useMemo(
     () => nftDetailsList.reduce((result:any,nftDetails) => {
-      if(nftDetails.lender.toUpperCase() !== defaultAccount.toUpperCase() && nftDetails.nftStatus == 0 && filteredAddress.includes(nftDetails.nftAddress)){
+      //console.log(nftDetails.lender.toUpperCase(),defaultAccount.toUpperCase())
+      if(nftDetails.lender.toUpperCase() !== defaultAccount.slice(0,10).toUpperCase() && nftDetails.nftStatus == 0 && filteredAddress.includes(nftDetails.nftAddress)){
         console.log(nftDetails.lender, defaultAccount)
         result.push(createData(nftDetails))
       }
