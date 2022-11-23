@@ -64,6 +64,7 @@ export default function NewLending() {
   };
 
   useEffect(() => {
+    console.log(process.env.NEXT_PUBLIC_API_KEY)
     connectHandler();
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", onAccountChangedHandler);
