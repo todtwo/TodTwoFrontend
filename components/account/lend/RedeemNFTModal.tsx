@@ -7,7 +7,7 @@ import { LentDashboardData } from "../../types/TableData";
 import { Grid } from "@mui/material";
 import Image from "next/image";
 import { EthContext } from "../../../context/EthContext";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -35,7 +35,7 @@ export default function RedeemModal(props: ModalProps) {
     try {
       const res = await TodTwoContract.redeemNFT(
         props.data?.projectAddress,
-        props.data?.tokenId
+        BigNumber.from(props.data?.tokenId)
       );
       if (res) {
         props.handleCancel();

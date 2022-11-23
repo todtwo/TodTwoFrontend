@@ -26,7 +26,7 @@ import { BigNumber, ethers } from "ethers";
 function createData(data: NFTDataWithDetails): LentDashboardData {
   var d = new Date(data.deadline * 1000);
   var now = new Date();
-  var diffTime = Math.abs(Date.parse(`${d}`) - Date.parse(`${now}`));
+  var diffTime = Date.parse(`${d}`) - Date.parse(`${now}`);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   return {
@@ -54,6 +54,10 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
   const [showRedeemNFTModal, setShowRedeemNFTModal] = useState(false);
   const [showRedeemCollateralModal, setShowCollateralModal] = useState(false);
   const [selected, setSelected] = useState<LentDashboardData | null>(null);
+  const [selectedCollateralModal, setSelectedCollateralModal] =
+    useState<LentDashboardData | null>(null);
+  const [selectedRedeemModal, setSelectedRedeemModal] =
+    useState<LentDashboardData | null>(null);
 
   useEffect(() => {
     setRows(
@@ -129,8 +133,8 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                         {row.collateralRedeemable ? (
                           <Button
                             onClick={() => {
-                              setSelected(row);
-                              setShowCollateralModal(true);
+                              setSelectedCollateralModal(row);
+                              // setShowCollateralModal(true);
                             }}
                             color="success"
                             variant="contained"
@@ -145,8 +149,8 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                       <TableCell>
                         <Button
                           onClick={() => {
-                            setSelected(row);
-                            setShowRedeemNFTModal(true);
+                            setSelectedRedeemModal(row);
+                            // setShowRedeemNFTModal(true);
                           }}
                           color="success"
                           variant="contained"
@@ -160,14 +164,14 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
               })}
             </TableBody>
           </Table>
-          {showRedeemCollateralModal && (
+          {selectedCollateralModal !== null && (
             <CollateralModal
               showModal={showRedeemCollateralModal}
               handleCancel={() => setShowCollateralModal(false)}
               data={selected}
             />
           )}
-          {showRedeemNFTModal && (
+          {selectedRedeemModal && (
             <RedeemModal
               showModal={showRedeemNFTModal}
               handleCancel={() => setShowRedeemNFTModal(false)}

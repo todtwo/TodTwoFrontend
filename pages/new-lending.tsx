@@ -40,9 +40,9 @@ export default function NewLending() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [account, setAccount] = useState<string | null>();
   const [filters, setFilters] = useState<filterCheckBoxType>({
-    nft1checked: false,
-    nft2checked: false,
-    nft3checked: false,
+    nft1checked: true,
+    nft2checked: true,
+    nft3checked: true,
   });
   const [data, setData] = useState<NFTData[]>([]);
   const [selectedNFT, setSelectedNFT] = useState<NFTData | null>(null);
@@ -64,8 +64,7 @@ export default function NewLending() {
   };
 
   useEffect(() => {
-    //console.log(process.env.NEXT_PUBLIC_API_KEY)
-    //console.log(process.env.NODE_ENV)
+    console.log(process.env.NEXT_PUBLIC_API_KEY);
     connectHandler();
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", onAccountChangedHandler);
