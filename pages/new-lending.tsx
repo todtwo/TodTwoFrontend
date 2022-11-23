@@ -22,8 +22,7 @@ function GetNFTsByContract(contract: String) {
     `https://api-testnets.simplehash.com/api/v0/nfts/ethereum-goerli/${contract}`,
     {
       headers: {
-        "X-API-KEY":
-          "wattanatawee_sk_c6b59475-e27f-46b8-b506-57bb41e67f85_82tcdyh0wq6fyfm8",
+        "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
       },
     }
   );

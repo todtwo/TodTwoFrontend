@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  env: {
+    API_KEY: process.NEXT_PUBLIC_API_KEY,
+  },
   images: {
     remotePatterns: [
       {
