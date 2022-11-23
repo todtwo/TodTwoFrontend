@@ -179,7 +179,7 @@ export default function Home() {
                 color="info"
                 disabled={!defaultAccount}
                 onClick={()=>{
-                  router.push("/lend")
+                  router.push("/lending")
                 }}
               >
                 Lend
