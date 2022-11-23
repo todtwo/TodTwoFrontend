@@ -17,7 +17,7 @@ export default function Home() {
     updateEthers,
     isReady,
   } = useContext(EthContext);
-  const router = useRouter()
+  const router = useRouter();
   const onAccountChangedHandler = (accounts: Array<string>) => {
     if (accounts.length !== 0) {
       setDefaultAccount(accounts[0]);
@@ -169,28 +169,41 @@ export default function Home() {
             alignContent={"center"}
             alignItems="center"
           >
-            <Box fontSize={50} width={"40%"} >
+            <Box fontSize={50} width={"40%"}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Box>
-            <Stack direction="row" width={"30%"} minWidth={"320px"} justifyContent="space-around">
+            <Stack
+              direction="row"
+              width={"30%"}
+              minWidth={"320px"}
+              justifyContent="space-around"
+            >
               <Button
-                sx={{ padding: "0.5rem 2.5rem", fontSize: "1.3rem" ,boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)"}}
+                sx={{
+                  padding: "0.5rem 2.5rem",
+                  fontSize: "1.3rem",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
                 variant="contained"
                 color="info"
                 disabled={!defaultAccount}
-                onClick={()=>{
-                  router.push("/lending")
+                onClick={() => {
+                  router.push("/lending");
                 }}
               >
                 Lend
               </Button>
               <Button
-                sx={{ padding: "0.5rem 1rem", fontSize: "1.3rem" ,boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)"}}
+                sx={{
+                  padding: "0.5rem 1rem",
+                  fontSize: "1.3rem",
+                  boxShadow: "2px 5px 5px rgba(0, 0, 0, 0.40)",
+                }}
                 variant="contained"
                 color="info"
                 disabled={!defaultAccount}
-                onClick={()=>{
-                  router.push("/borrow")
+                onClick={() => {
+                  router.push("/borrow");
                 }}
               >
                 Borrow

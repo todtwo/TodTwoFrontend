@@ -126,7 +126,13 @@ export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
                 </TableCell>
                 <TableCell>
                   {row.returnable ? (
-                    <Button onClick={() => handleReturn(row)}>Return</Button>
+                    <Button
+                      onClick={() => handleReturn(row)}
+                      color="success"
+                      variant="contained"
+                    >
+                      Return
+                    </Button>
                   ) : (
                     <Box sx={{ color: "red" }}>Cannot be returned</Box>
                   )}

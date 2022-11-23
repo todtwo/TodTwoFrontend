@@ -127,8 +127,10 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                               setSelected(row);
                               setShowCollateralModal(true);
                             }}
+                            color="success"
+                            variant="contained"
                           >
-                            Collect collateral
+                            Redeem collateral
                           </Button>
                         ) : (
                           <Box>Being Borrowed</Box>
@@ -141,6 +143,8 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                             setSelected(row);
                             setShowRedeemNFTModal(true);
                           }}
+                          color="success"
+                          variant="contained"
                         >
                           Redeem NFT
                         </Button>

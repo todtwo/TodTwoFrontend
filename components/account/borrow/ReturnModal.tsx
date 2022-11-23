@@ -105,8 +105,20 @@ export default function ReturnModal(props: returnModalProps) {
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={() => handleReturn()}>Confirm</Button>
-          <Button onClick={props.handleCancel}>Cancel</Button>
+          <Button
+            onClick={() => handleReturn()}
+            color="success"
+            variant="contained"
+          >
+            Confirm
+          </Button>
+          <Button
+            onClick={props.handleCancel}
+            color="success"
+            variant="contained"
+          >
+            Cancel
+          </Button>
         </Box>
       </Box>
     </Modal>

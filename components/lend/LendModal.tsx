@@ -159,6 +159,8 @@ export default function LendModal(props: LendModalProps) {
             onClick={() => {
               confirmLend();
             }}
+            color="success"
+            variant="contained"
           >
             Confirm
           </Button>

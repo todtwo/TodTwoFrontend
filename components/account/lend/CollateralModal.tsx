@@ -79,8 +79,12 @@ export default function CollateralModal(props: CollateralModalProps) {
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={() => handleConfirm()}>Confirm</Button>
-          <Button onClick={props.handleCancel}>Cancel</Button>
+          <Button onClick={() => handleConfirm()} variant="success">
+            Confirm
+          </Button>
+          <Button onClick={props.handleCancel} variant="warning">
+            Cancel
+          </Button>
         </Box>
       </Box>
     </Modal>

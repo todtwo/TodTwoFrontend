@@ -7,7 +7,7 @@ import { NftDetails } from "../../types/NftDetails";
 
 interface propTypes {
   nftDetails: NftDetails;
-  imgPath:string;
+  imgPath: string;
 }
 const BigNumber = ethers.BigNumber;
 
@@ -17,25 +17,29 @@ const NftStatusToStatusName = {
   2: "DELETED",
 };
 
-const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
-  const { AddressToProjectMap ,TodTwoContract} = useContext(EthContext)
-  const [isBorrowing, setisBorrowing] = useState(false)
-  const totalPriceToPay = BigNumber.from(nftDetails.borrowFee).add(BigNumber.from(nftDetails.collateralFee))
+const BorrowDetailsBox = ({ nftDetails, imgPath }: propTypes) => {
+  const { AddressToProjectMap, TodTwoContract } = useContext(EthContext);
+  const [isBorrowing, setisBorrowing] = useState(false);
+  const totalPriceToPay = BigNumber.from(nftDetails.borrowFee).add(
+    BigNumber.from(nftDetails.collateralFee)
+  );
   const onBorrowHandler = async () => {
     try {
-      console.log(nftDetails.borrowFee)
-      console.log(totalPriceToPay.toString())
-      const transaction = await TodTwoContract.borrowNFT(nftDetails.nftLPListIdx, {
-        value:totalPriceToPay,
-      })
-      console.log("transaction",transaction)
-      const receipt = await transaction.wait()
-      console.log("receipt",receipt)
+      console.log(nftDetails.borrowFee);
+      console.log(totalPriceToPay.toString());
+      const transaction = await TodTwoContract.borrowNFT(
+        nftDetails.nftLPListIdx,
+        {
+          value: totalPriceToPay,
+        }
+      );
+      console.log("transaction", transaction);
+      const receipt = await transaction.wait();
+      console.log("receipt", receipt);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    
-  }
+  };
   return (
     <Box
       justifyContent={"center"}
@@ -60,7 +64,7 @@ const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
           height={"20vw"}
         >
           <Image
-            placeholder = "empty"
+            placeholder="empty"
             fill
             sizes="(max-width: 20vw) 20vw,
               (max-width: 1200px) 50vw,
@@ -84,24 +88,33 @@ const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
               <Box>Collateral:</Box>
               <Box>Status:</Box>
             </Stack>
-            <Stack height={"100%"} maxWidth={"300px"}justifyContent={"space-around"}>
+            <Stack
+              height={"100%"}
+              maxWidth={"300px"}
+              justifyContent={"space-around"}
+            >
               <Box>{nftDetails.nftIdx}</Box>
               <Box>{AddressToProjectMap[nftDetails.nftAddress]}</Box>
               <Box>{nftDetails.lender}</Box>
               <Box>{`${ethers.utils.formatEther(
                 BigNumber.from(nftDetails.borrowFee)
-              )}Eth/${nftDetails.lendingDuration/3600/24}Days`}</Box>
+              )}Eth/${nftDetails.lendingDuration / 3600 / 24}Days`}</Box>
               <Box>{`${ethers.utils.formatEther(
                 BigNumber.from(nftDetails.collateralFee)
               )}ETH`}</Box>
               <Box>{NftStatusToStatusName[nftDetails.nftStatus]}</Box>
             </Stack>
           </Stack>
-          <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>{
-            nftDetails.nftStatus === 0 && <Button onClick={onBorrowHandler} color="success" variant="contained">
-              Borrow
-            </Button>}
-            
+          <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>
+            {nftDetails.nftStatus === 0 && (
+              <Button
+                onClick={onBorrowHandler}
+                color="success"
+                variant="contained"
+              >
+                Borrow
+              </Button>
+            )}
           </Box>
         </Box>
       </Stack>
