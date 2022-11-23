@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 import { BorrowedDashboardData } from "../../types/TableData";
 import Image from "next/image";
 import { EthContext } from "../../../context/EthContext";
+import { BigNumber } from "ethers";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,7 +33,10 @@ export default function ReturnModal(props: returnModalProps) {
   const { TodTwoContract } = React.useContext(EthContext);
 
   const handleReturn = () => {
-    TodTwoContract.returnNFT(props.data?.projectAddress, props.data?.tokenId);
+    TodTwoContract.returnNFT(
+      props.data?.projectAddress,
+      BigNumber.from(props.data?.tokenId)
+    );
   };
 
   return (
