@@ -40,7 +40,6 @@ export default function Account() {
     setLent(lentNftDatawithDetails);
 
     const borrowed = await TodTwoContract.viewUserBorrowedProfile(account);
-    console.log("B", borrowed);
     const borrowedNftDetails = await GetNFTDetails(borrowed);
     const borrowedNftDatawithDetails = mergeObject(
       borrowed,
