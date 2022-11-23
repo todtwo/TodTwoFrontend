@@ -78,7 +78,7 @@ const EthContextProvider = ({ children }) => {
     const contract = AddressToContract[contractAddress]
     if (contract) {
       try {
-        const uri = await ThunTwoContract.tokenURI(index);
+        const uri = await contract.tokenURI(index);
         console.log(uri);
         const response = await axios.get(
           `https://ipfs.io/ipfs/${uri.replace("ipfs://", "")}`
@@ -86,6 +86,21 @@ const EthContextProvider = ({ children }) => {
         const imgIpfsPath = response.data.image.replace("ipfs://", "")
         const imgHttpsPath = `https://ipfs.io/ipfs/${imgIpfsPath}`
         return imgHttpsPath
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log("contract undefined")
+    }
+  }
+
+  const getNFTOwner = async (contractAddress,index) => {
+    const contract = AddressToContract[contractAddress]
+    if (contract) {
+      try {
+        const owner = await contract.ownerOf(index);
+        console.log(owner);
+        return owner
       } catch (error) {
         console.log(error)
       }
