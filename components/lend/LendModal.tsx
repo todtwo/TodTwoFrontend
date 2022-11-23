@@ -49,7 +49,6 @@ export default function LendModal(props: LendModalProps) {
           props.data?.tokenId
         );
         const receipt = await x.wait();
-        console.log("REC", receipt);
       }
 
       const res = await TodTwoContract.lendNFT(
