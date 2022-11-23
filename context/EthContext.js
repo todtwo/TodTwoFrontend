@@ -7,7 +7,7 @@ export const EthContext = createContext();
 const EthContextProvider = ({ children }) => {
   const [isReady, setIsReady] = useState(false);
   const [defaultAccount, setDefaultAccount] = useState(null);
-  const [ThunTwocontract, setThunTwoContract] = useState(null);
+  const [ThunTwoContract, setThunTwoContract] = useState(null);
   const [FahTwoContract, setFahTwoContract] = useState(null);
   const [ClarkTwoContract, setClarkTwoContract] = useState(null);
   const [TodTwoContract, setTodTwoContract] = useState(null);
@@ -19,8 +19,8 @@ const EthContextProvider = ({ children }) => {
   const TodTwoAddress = "0x81b69493Da8c5F6aE84e9c574044c4a241688FCa"
 
   const updateEthers = () => {
-    console.log(typeof(NFT_abi))
-    console.log(NFT_abi)
+    //console.log(typeof(NFT_abi))
+    //console.log(NFT_abi)
     let tmpProvider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(tmpProvider);
     let tmpSigner = tmpProvider.getSigner();
@@ -46,7 +46,7 @@ const EthContextProvider = ({ children }) => {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
-          console.log(result)
+          //console.log(result)
           if (result.length !== 0) {
             setDefaultAccount(result[0]);
             updateEthers()
@@ -68,21 +68,44 @@ const EthContextProvider = ({ children }) => {
     [ClarkTwoAddress]: "ClarkTwo",
   };
 
-  const getNFTImage = async (contract,index) => {
-    console.log("called")
-    return await contract.tokenURI(index)
+  const AddressToContract = {
+    [ThunTwoAddress]: ThunTwoContract,
+    [FahTwoAddress]: FahTwoContract,
+    [ClarkTwoAddress]: ClarkTwoContract,
+  }
+
+  const getNFTImage = async (contractAddress,index) => {
+    const contract = AddressToContract[contractAddress]
+    if (contract) {
+      try {
+        const uri = await ThunTwoContract.tokenURI(index);
+        console.log(uri);
+        const response = await axios.get(
+          `https://ipfs.io/ipfs/${uri.replace("ipfs://", "")}`
+        );
+        const imgIpfsPath = response.data.image.replace("ipfs://", "")
+        const imgHttpsPath = `https://ipfs.io/ipfs/${imgIpfsPath}`
+        return imgHttpsPath
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log("contract undefined")
+    }
   }
   return (
     <EthContext.Provider
       value={{
         defaultAccount,
         setDefaultAccount,
-        ThunTwocontract,
+        ThunTwoContract,
         setThunTwoContract,
         FahTwoContract,
         setFahTwoContract,
         ClarkTwoContract,
         setClarkTwoContract,
+        TodTwoContract,
+        setTodTwoContract,
         provider,
         setProvider,
         signer,

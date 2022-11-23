@@ -1,7 +1,7 @@
 import { NftStatus } from "./NftStatus";
 import { WhitelistedNftAdresses } from "./WhitelistedNftAdresses";
 
-interface NftDetails {
+interface NftDetailsWithImg{
   nftLPListIdx: string | string[] | undefined;
   nftAddress: WhitelistedNftAdresses;
   nftIdx: string;
@@ -11,6 +11,7 @@ interface NftDetails {
   lendingDuration: number;
   deadline: number;
   nftStatus: NftStatus;
+  imgPath: string
 }
 
-export type { NftDetails };
+export type { NftDetailsWithImg };

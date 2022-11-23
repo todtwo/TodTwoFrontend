@@ -36,7 +36,7 @@ interface NFTDataWithDetails {
   collateralFee: string;
   borrowFee: string;
   lendingDuration: number;
-  deadline: Date;
+  deadline: number;
   nftStatus: NftStatus;
 }
 

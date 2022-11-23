@@ -7,6 +7,7 @@ import { NftDetails } from "../../types/NftDetails";
 
 interface propTypes {
   nftDetails: NftDetails;
+  imgPath:string;
 }
 const BigNumber = ethers.BigNumber;
 
@@ -16,14 +17,14 @@ const NftStatusToStatusName = {
   2: "DELETED",
 };
 
-const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
+const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
   const { AddressToProjectMap } = useContext(EthContext)
   return (
     <Box
       justifyContent={"center"}
       alignContent="center"
       alignItems={"center"}
-      marginX={"15vw"}
+      marginX={"12vw"}
       bgcolor={"secondary.dark"}
       borderRadius={"20px"}
       height="75vh"
@@ -42,11 +43,12 @@ const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
           height={"20vw"}
         >
           <Image
+            placeholder = "empty"
             fill
             sizes="(max-width: 20vw) 20vw,
               (max-width: 1200px) 50vw,
               33vw"
-            src="https://ipfs.io/ipfs/QmWUwXcYctHTpqjHZKKKXF6KyxQdoMxtak8SWFhW2TmSuS/1.jpg"
+            src={imgPath}
             alt="NFT Photo"
           />
         </Box>
@@ -65,13 +67,13 @@ const BorrowDetailsBox = ({ nftDetails }: propTypes) => {
               <Box>Collateral:</Box>
               <Box>Status:</Box>
             </Stack>
-            <Stack height={"100%"} justifyContent={"space-around"}>
+            <Stack height={"100%"} maxWidth={"300px"}justifyContent={"space-around"}>
               <Box>{nftDetails.nftIdx}</Box>
               <Box>{AddressToProjectMap[nftDetails.nftAddress]}</Box>
               <Box>{nftDetails.lender}</Box>
               <Box>{`${ethers.utils.formatEther(
                 BigNumber.from(nftDetails.borrowFee)
-              )}Eth/${nftDetails.lendingDuration}Day`}</Box>
+              )}Eth/${nftDetails.lendingDuration/3600/24}Days`}</Box>
               <Box>{`${ethers.utils.formatEther(
                 BigNumber.from(nftDetails.collateralFee)
               )}ETH`}</Box>
