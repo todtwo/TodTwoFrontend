@@ -31,9 +31,9 @@ const Borrow = () => {
     TodTwoContract,
   } = useContext(EthContext);
   const [filters, setFilters] = useState<filterCheckBoxType>({
-    nft1checked: false,
-    nft2checked: false,
-    nft3checked: false,
+    nft1checked: true,
+    nft2checked: true,
+    nft3checked: true,
   });
   const [nftDetailsList, setNftDetailsList] = useState([]);
   const router = useRouter();
@@ -134,7 +134,7 @@ const Borrow = () => {
           </Grow>
           <Grow in={true}>
             <Box width={"90%"}>
-              <BorrowTable nftDetailsList={detailsWithImgList} />
+              <BorrowTable nftDetailsList={detailsWithImgList} filters={filters} />
             </Box>
           </Grow>
         </Stack>

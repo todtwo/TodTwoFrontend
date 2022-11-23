@@ -97,10 +97,11 @@ const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
               <Box>{NftStatusToStatusName[nftDetails.nftStatus]}</Box>
             </Stack>
           </Stack>
-          <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>
-            <Button onClick={onBorrowHandler} color="success" variant="contained">
+          <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>{
+            nftDetails.nftStatus === 0 && <Button onClick={onBorrowHandler} color="success" variant="contained">
               Borrow
-            </Button>
+            </Button>}
+            
           </Box>
         </Box>
       </Stack>

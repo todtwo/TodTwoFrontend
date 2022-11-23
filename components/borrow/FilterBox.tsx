@@ -37,7 +37,7 @@ export default function FilterBox({ filters, setFilters }: propTypes) {
                 onChange={onFilterChangedHandler}
               />
             }
-            label="NFT1"
+            label="ThunTwo"
             name="nft1checked"
           />
           <FormControlLabel
@@ -47,7 +47,7 @@ export default function FilterBox({ filters, setFilters }: propTypes) {
                 onChange={onFilterChangedHandler}
               />
             }
-            label="NFT2"
+            label="FahTwo"
             name="nft2checked"
           />
           <FormControlLabel
@@ -57,7 +57,7 @@ export default function FilterBox({ filters, setFilters }: propTypes) {
                 onChange={onFilterChangedHandler}
               />
             }
-            label="NFT3"
+            label="ClarkTwo"
             name="nft3checked"
           />
         </FormGroup>

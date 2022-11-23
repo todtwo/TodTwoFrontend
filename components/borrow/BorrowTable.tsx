@@ -14,27 +14,62 @@ import { WhitelistedNftAdresses } from "../../types/WhitelistedNftAdresses";
 import { NftStatus } from "../../types/NftStatus";
 import { EthContext } from "../../context/EthContext";
 import { NftDetails } from "../../types/NftDetails";
+import { filterCheckBoxType } from "../../types/filterCheckBoxType";
 
 interface propTypes {
-  nftDetailsList:Array<NftDetails>
+  nftDetailsList: Array<NftDetails>;
+  filters: filterCheckBoxType;
 }
 
-const BorrowTable = ({nftDetailsList}: propTypes) => {
+const BorrowTable = ({ nftDetailsList, filters }: propTypes) => {
   const router = useRouter();
-  const { AddressToProjectMap, TodTwoContract} = useContext(EthContext);
+  const { AddressToProjectMap, TodTwoContract, defaultAccount } = useContext(EthContext);
 
-  const createData = (nftDetails:NftDetails
-  ) => {
+  const getFilteredAddress = () => {
+    const tmpFilteredAddress: Array<string> = [];
+    if (filters.nft1checked) {
+      tmpFilteredAddress.push("0x40e3b499A062153158C90572f378132Bab6AB07B");
+    }
+    if (filters.nft2checked) {
+      tmpFilteredAddress.push("0x13502Ea6F6D14f00025a3AdDe02BFf050be24532");
+    }
+    if (filters.nft3checked) {
+      tmpFilteredAddress.push("0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5");
+    }
+    console.log(tmpFilteredAddress);
+    return tmpFilteredAddress;
+  };
+  const filteredAddress = useMemo(getFilteredAddress, [filters]);
+  const createData = (nftDetails: NftDetails) => {
     const projectName: string = AddressToProjectMap[nftDetails.nftAddress];
     const terms: string = `${ethers.utils.formatEther(
       nftDetails.borrowFee
-    )}Eth/${nftDetails.lendingDuration/3600/24}Days`;
-    const collateral: string = `${ethers.utils.formatEther(nftDetails.collateralFee)}ETH`;
+    )}Eth/${nftDetails.lendingDuration / 3600 / 24}Days`;
+    const collateral: string = `${ethers.utils.formatEther(
+      nftDetails.collateralFee
+    )}ETH`;
     const imgPath: string = "/vercel.svg";
-    return { nftIdx:nftDetails.nftIdx, projectName, lender:nftDetails.lender, terms, collateral, nftLPListIdx:nftDetails.nftLPListIdx };
+    return {
+      nftIdx: nftDetails.nftIdx,
+      projectName,
+      lender: nftDetails.lender,
+      terms,
+      collateral,
+      nftLPListIdx: nftDetails.nftLPListIdx,
+    };
   };
-  const rows = useMemo(()=>nftDetailsList.map((nftDetails) => createData(nftDetails)),[nftDetailsList]);
   
+  const rows = useMemo(
+    () => nftDetailsList.reduce((result:any,nftDetails) => {
+      if(nftDetails.lender.toUpperCase() !== defaultAccount.toUpperCase() && nftDetails.nftStatus == 0 && filteredAddress.includes(nftDetails.nftAddress)){
+        console.log(nftDetails.lender, defaultAccount)
+        result.push(createData(nftDetails))
+      }
+      return result
+    },[]),
+    [nftDetailsList,filteredAddress]
+  );
+
   return (
     <Box>
       <TableContainer

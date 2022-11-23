@@ -21,7 +21,8 @@ function Navbar({ selectedTab = false }: PropTypes) {
 
   const navigate = (href: string) => {
     return () => {
-      router.push(`${href}`);
+      if(defaultAccount){router.push(`${href}`);}
+      
     };
   };
 
@@ -66,12 +67,14 @@ function Navbar({ selectedTab = false }: PropTypes) {
           value="Lend"
           label="Lend"
           onClick={navigate("/lending")}
+          disabled={!defaultAccount}
         />
         <Tab
           sx={{ fontSize: "1rem", color: "#FFFDF1" }}
           value="Borrow"
           label="Borrow"
           onClick={navigate("/borrow")}
+          disabled={!defaultAccount}
         />
         {defaultAccount ? (
           <Tab
@@ -79,6 +82,7 @@ function Navbar({ selectedTab = false }: PropTypes) {
             value="Account"
             label="Account"
             onClick={navigate("/account")}
+            disabled={!defaultAccount}
           />
         ) : (
           <div
