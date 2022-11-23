@@ -93,8 +93,10 @@ export default function Lending() {
   }, []);
 
   useEffect(() => {
-    getNFTs();
-  }, [account]);
+    if (isReady) {
+      getNFTs();
+    }
+  }, [defaultAccount, isReady]);
 
   return (
     <>

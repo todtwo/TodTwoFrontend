@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from "@mui/material";
 import { ethers } from "ethers";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { EthContext } from "../../context/EthContext";
 import { NftDetails } from "../../types/NftDetails";
 
@@ -12,13 +12,30 @@ interface propTypes {
 const BigNumber = ethers.BigNumber;
 
 const NftStatusToStatusName = {
-  0: "Available",
+  0: "AVAILABLE",
   1: "BEING_BORROWED",
   2: "DELETED",
 };
 
 const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
-  const { AddressToProjectMap } = useContext(EthContext)
+  const { AddressToProjectMap ,TodTwoContract} = useContext(EthContext)
+  const [isBorrowing, setisBorrowing] = useState(false)
+  const totalPriceToPay = BigNumber.from(nftDetails.borrowFee).add(BigNumber.from(nftDetails.collateralFee))
+  const onBorrowHandler = async () => {
+    try {
+      console.log(nftDetails.borrowFee)
+      console.log(totalPriceToPay.toString())
+      const transaction = await TodTwoContract.borrowNFT(nftDetails.nftLPListIdx, {
+        value:totalPriceToPay,
+      })
+      console.log("transaction",transaction)
+      const receipt = await transaction.wait()
+      console.log("receipt",receipt)
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
   return (
     <Box
       justifyContent={"center"}
@@ -81,7 +98,7 @@ const BorrowDetailsBox = ({ nftDetails,imgPath }: propTypes) => {
             </Stack>
           </Stack>
           <Box paddingY={"1rem"} textAlign={"center"} height={"5vh"}>
-            <Button color="success" variant="contained">
+            <Button onClick={onBorrowHandler} color="success" variant="contained">
               Borrow
             </Button>
           </Box>

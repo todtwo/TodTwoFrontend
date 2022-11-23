@@ -41,28 +41,32 @@ export default function LendModal(props: LendModalProps) {
 
   async function confirmLend() {
     if (collateral && lendingDuration && lendingPrice) {
-      const contract = AddressToContract(props.data?.address);
-      const checkApproval = await contract.getApproved(props.data?.tokenId);
-      if (checkApproval !== TodTwoContract.address) {
-        const x = await contract.approve(
-          TodTwoContract.address,
-          props.data?.tokenId
+      console.log(props.data?.address);
+      const contract = AddressToContract[props.data?.address as string];
+      console.log(contract);
+      try {
+        const checkApproval = await contract.getApproved(props.data?.tokenId);
+        if (checkApproval !== TodTwoContract.address) {
+          const x = await contract.approve(
+            TodTwoContract.address,
+            props.data?.tokenId
+          );
+          const receipt = await x.wait();
+          console.log("REC", receipt);
+        }
+
+        const res = await TodTwoContract.lendNFT(
+          props.data?.address,
+          props.data?.tokenId,
+          ethers.utils.parseEther(`${collateral}`),
+          ethers.utils.parseEther(`${lendingPrice}`),
+          lendingDuration * 86400
         );
-        const receipt = await x.wait();
-        console.log("REC", receipt);
-      }
 
-      const res = await TodTwoContract.lendNFT(
-        props.data?.address,
-        props.data?.tokenId,
-        ethers.utils.parseEther(`${collateral}`),
-        ethers.utils.parseEther(`${lendingPrice}`),
-        lendingDuration * 86400
-      );
-
-      if (res) {
-        props.handleCancel();
-      }
+        if (res) {
+          props.handleCancel();
+        }
+      } catch (error) {}
     } else {
       setShowWarning(true);
     }

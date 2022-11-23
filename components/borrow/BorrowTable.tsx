@@ -21,7 +21,7 @@ interface propTypes {
 
 const BorrowTable = ({nftDetailsList}: propTypes) => {
   const router = useRouter();
-  const { AddressToProjectMap } = useContext(EthContext);
+  const { AddressToProjectMap, TodTwoContract} = useContext(EthContext);
 
   const createData = (nftDetails:NftDetails
   ) => {
@@ -34,7 +34,7 @@ const BorrowTable = ({nftDetailsList}: propTypes) => {
     return { nftIdx:nftDetails.nftIdx, projectName, lender:nftDetails.lender, terms, collateral, nftLPListIdx:nftDetails.nftLPListIdx };
   };
   const rows = useMemo(()=>nftDetailsList.map((nftDetails) => createData(nftDetails)),[nftDetailsList]);
-
+  
   return (
     <Box>
       <TableContainer

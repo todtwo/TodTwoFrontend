@@ -115,6 +115,7 @@ const EthContextProvider = ({ children }) => {
         isReady,
         setIsReady,
         AddressToProjectMap,
+        AddressToContract,
         getNFTImage
       }}
     >
