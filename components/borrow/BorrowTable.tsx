@@ -68,7 +68,7 @@ const BorrowTable = ({ nftDetailsList, filters }: propTypes) => {
       }
       return result
     },[]),
-    [nftDetailsList,filteredAddress]
+    [nftDetailsList,filteredAddress,defaultAccount]
   );
 
   return (
