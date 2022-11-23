@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import React, { useState, createContext, useEffect } from "react";
-import NFT_abi from "../abi/Thuntwo_abi.json"
+import NFT_abi from "../abi/ThunTwo_abi.json"
 import TodTwo_abi from "../abi/TodTwo_abi.json"
 export const EthContext = createContext();
 
