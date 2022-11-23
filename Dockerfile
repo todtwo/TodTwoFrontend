@@ -5,6 +5,6 @@ COPY . .
 
 RUN npm install
 
-RUN num run build
+RUN npm run build
 
 CMD ["npm", "run", "start"]
