@@ -59,7 +59,7 @@ interface NFTDataWithDetails {
   // borrowFee: string;
   // lendingDuration: number;
   deadline: number;
-  nftStatus: NftStatus;
+  status: NftStatus;
 }
 
 function mergeObject(a: any[], b: NFTData[]): NFTDataWithDetails[] {

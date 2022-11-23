@@ -31,8 +31,18 @@ interface CollateralModalProps {
 export default function CollateralModal(props: CollateralModalProps) {
   const { TodTwoContract } = React.useContext(EthContext);
 
-  function handleConfirm() {
-    TodTwoContract.returnNFT(props.data?.projectAddress, props.data?.tokenId);
+  async function handleConfirm() {
+    try {
+      const res = await TodTwoContract.returnNFT(
+        props.data?.projectAddress,
+        props.data?.tokenId
+      );
+      if (res) {
+        props.handleCancel();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <Modal open={props.showModal} onClose={props.handleCancel}>
@@ -79,12 +89,14 @@ export default function CollateralModal(props: CollateralModalProps) {
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={() => handleConfirm()} variant="success">
+          <Button
+            onClick={() => handleConfirm()}
+            variant="outlined"
+            color="success"
+          >
             Confirm
           </Button>
-          <Button onClick={props.handleCancel} variant="warning">
-            Cancel
-          </Button>
+          <Button onClick={props.handleCancel}>Cancel</Button>
         </Box>
       </Box>
     </Modal>

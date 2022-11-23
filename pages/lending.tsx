@@ -191,7 +191,7 @@ export default function Lending() {
                           ETH
                         </TableCell>
                         <TableCell>
-                          {row.nftStatus === NftStatus.BEING_BORROWED
+                          {row.status === NftStatus.BEING_BORROWED
                             ? "Being Borrowed"
                             : "Available"}
                         </TableCell>

@@ -21,21 +21,26 @@ import { NFTDataWithDetails } from "../../../utils/GetNFTDetails";
 import { NftStatus } from "../../../types/NftStatus";
 import RedeemModal from "./RedeemNFTModal";
 import { LentDashboardData } from "../../types/TableData";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 function createData(data: NFTDataWithDetails): LentDashboardData {
+  var d = new Date(data.deadline * 1000);
+  var now = new Date();
+  var diffTime = Math.abs(Date.parse(`${d}`) - Date.parse(`${now}`));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
   return {
     asset: {
       name: data.name,
       imgUrl: data.fullImgUrl,
       projectName: data.projectName,
     },
-    nftStatus: data.nftStatus,
-    duration: 0,
-    due: `${data.deadline}`,
+    nftStatus: data.status,
+    duration: diffDays,
+    due: d.toLocaleString(),
     collateral: +data.condition.collateralFee,
     lentPrice: +data.condition.borrowFee,
-    collateralRedeemable: false,
+    collateralRedeemable: diffTime <= 0,
     lendingDuration: +data.condition.lendingDuration,
     projectAddress: data.nftAddress,
     tokenId: +data.tokenId,

@@ -32,12 +32,16 @@ export default function RedeemModal(props: ModalProps) {
   const { TodTwoContract } = React.useContext(EthContext);
 
   async function handleConfirm() {
-    const res = await TodTwoContract.redeemNFT(
-      props.data?.projectAddress,
-      props.data?.tokenId
-    );
-    if (res) {
-      props.handleCancel();
+    try {
+      const res = await TodTwoContract.redeemNFT(
+        props.data?.projectAddress,
+        props.data?.tokenId
+      );
+      if (res) {
+        props.handleCancel();
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
   return (
@@ -67,7 +71,8 @@ export default function RedeemModal(props: ModalProps) {
               >
                 <Box>Name</Box>
                 <Box>Project</Box>
-                <Box>Fees</Box>
+                <Box>Lending Price</Box>
+                <Box>Lending Duration</Box>
                 <Box>Collateral</Box>
               </Grid>
               <Grid item xs={8} sx={{ fontSize: "25px", height: "100%" }}>
@@ -76,6 +81,7 @@ export default function RedeemModal(props: ModalProps) {
                 <Box>
                   {ethers.utils.formatEther(`${props.data?.lentPrice}`)} ETH
                 </Box>
+                <Box> {`${props.data!.lendingDuration / 86400}`} Days</Box>
                 <Box>
                   {ethers.utils.formatEther(`${props.data?.collateral}`)} ETH
                 </Box>

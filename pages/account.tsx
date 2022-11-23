@@ -32,20 +32,20 @@ export default function Account() {
 
   async function callData() {
     const lent = await TodTwoContract.viewUserLentProfile(account);
-
     const lentNftDetails = await GetNFTDetails(lent);
     const lentNftDatawithDetails = mergeObject(lent, lentNftDetails).filter(
-      (e) => e.nftStatus !== NftStatus.DELETED
+      (e) => e.status !== NftStatus.DELETED
     );
 
     setLent(lentNftDatawithDetails);
 
     const borrowed = await TodTwoContract.viewUserBorrowedProfile(account);
+    console.log("B", borrowed);
     const borrowedNftDetails = await GetNFTDetails(borrowed);
     const borrowedNftDatawithDetails = mergeObject(
       borrowed,
       borrowedNftDetails
-    ).filter((e) => e.nftStatus !== NftStatus.DELETED);
+    ).filter((e) => e.status !== NftStatus.DELETED);
 
     setBorrowed(borrowedNftDatawithDetails);
   }
@@ -57,6 +57,12 @@ export default function Account() {
   useEffect(() => {
     if (account) callData();
   }, [account]);
+
+  useEffect(() => {
+    if (account) {
+      var x = callData();
+    }
+  }, []);
 
   useEffect(() => {
     setAccount(defaultAccount);

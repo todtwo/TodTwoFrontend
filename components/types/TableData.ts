@@ -30,7 +30,7 @@ interface BorrowedDashboardData {
   collateral: number;
   borrowedPrice: number;
   lendingDuration: number;
-  returnable: true;
+  returnable: boolean;
   tokenId: number;
 }
 

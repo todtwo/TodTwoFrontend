@@ -22,6 +22,10 @@ import { BorrowedDashboardData } from "../../types/TableData";
 import { ethers } from "ethers";
 
 function createData(data: NFTDataWithDetails): BorrowedDashboardData {
+  var d = new Date(data.deadline * 1000);
+  var now = new Date();
+  var diffTime = Math.abs(Date.parse(`${d}`) - Date.parse(`${now}`));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return {
     asset: {
       name: data.name,
@@ -30,12 +34,12 @@ function createData(data: NFTDataWithDetails): BorrowedDashboardData {
     },
     lender: data.lender,
     due: `${data.deadline}`,
-    duration: 1,
+    duration: data.condition.lendingDuration,
     projectAddress: data.nftAddress,
     collateral: +data.condition.collateralFee,
     borrowedPrice: +data.condition.borrowFee,
     lendingDuration: +data.condition.lendingDuration,
-    returnable: true,
+    returnable: diffTime >= 0,
     tokenId: +data.tokenId,
   };
 }
@@ -118,11 +122,11 @@ export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
 
                 <TableCell>
                   {" "}
-                  {ethers.utils.formatEther(row.borrowedPrice)}ETH
+                  {ethers.utils.formatEther(`${row.borrowedPrice}`)}ETH
                 </TableCell>
                 <TableCell>
                   {" "}
-                  {ethers.utils.formatEther(row.collateral)}ETH
+                  {ethers.utils.formatEther(`${row.collateral}`)}ETH
                 </TableCell>
                 <TableCell>
                   {row.returnable ? (
