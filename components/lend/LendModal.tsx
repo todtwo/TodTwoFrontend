@@ -8,6 +8,7 @@ import { duration, Grid } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useState, useContext } from "react";
 import { ethers } from "ethers";
+import Image from "next/image";
 import { EthContext } from "../../context/EthContext";
 
 const style = {
@@ -74,7 +75,12 @@ export default function LendModal(props: LendModalProps) {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             {" "}
-            <img style={{ width: "90%" }} src={props.data?.fullImgUrl} />
+            <Image
+              src={`${props.data?.fullImgUrl}`}
+              width={500}
+              height={500}
+              alt="idkidk"
+            />
           </Grid>
 
           <Grid item xs={6}>

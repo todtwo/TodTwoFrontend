@@ -35,7 +35,16 @@ const columns = [
   "Status",
 ];
 export default function Lending() {
-  const { defaultAccount, TodTwoContract } = useContext(EthContext);
+  const {
+    provider,
+    defaultAccount,
+    setDefaultAccount,
+    connectHandler,
+    isReady,
+    ThunTwoContract,
+    TodTwoContract,
+    getNFTImage,
+  } = useContext(EthContext);
   const [rows, setRows] = useState<NFTDataWithDetails[]>([]);
   const [account, setAccount] = useState<string | null>(null);
 
@@ -49,6 +58,35 @@ export default function Lending() {
     const merged = mergeObject(nfts, nftDetails);
     setRows(merged);
   }
+
+  const onAccountChangedHandler = (accounts: Array<string>) => {
+    if (accounts.length > 0) {
+      setDefaultAccount(accounts[0]);
+    } else {
+      setDefaultAccount(null);
+    }
+  };
+
+  useEffect(() => {
+    connectHandler();
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", onAccountChangedHandler);
+    }
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          onAccountChangedHandler
+        );
+      }
+    };
+  });
+  useEffect(() => {
+    // check account connection
+    if (isReady && router.isReady && !defaultAccount) {
+      router.push("/");
+    }
+  }, [isReady, router, defaultAccount]);
 
   useEffect(() => {
     setAccount(defaultAccount);

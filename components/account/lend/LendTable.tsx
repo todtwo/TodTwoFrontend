@@ -59,10 +59,6 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
     );
   }, [props.data]);
 
-  useEffect(() => {
-    console.log("rows", rows);
-  }, [rows]);
-
   return (
     <>
       <Fade in={true} timeout={500}>
@@ -118,12 +114,10 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                       </TableCell>
                     )}
                     <TableCell>
-                      {row.lentPrice}
-                      {/* {ethers.utils.formatEther(row.lentPrice)}ETH */}
+                      {ethers.utils.formatEther(row.lentPrice)}ETH
                     </TableCell>
                     <TableCell>
-                      {row.collateral}
-                      {/* {ethers.utils.formatEther(row.collateral)}ETH */}
+                      {ethers.utils.formatEther(row.collateral)}ETH
                     </TableCell>
 
                     {row.nftStatus == NftStatus.BEING_BORROWED ? (
@@ -132,7 +126,6 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                           <Button
                             onClick={() => {
                               setSelected(row);
-                              console.log("selected", selected);
                               setShowCollateralModal(true);
                             }}
                           >
