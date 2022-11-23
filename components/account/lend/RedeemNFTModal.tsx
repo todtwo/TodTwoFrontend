@@ -7,7 +7,7 @@ import { LentDashboardData } from "../../types/TableData";
 import { Grid } from "@mui/material";
 import Image from "next/image";
 import { EthContext } from "../../../context/EthContext";
-
+import { ethers } from "ethers";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -73,8 +73,12 @@ export default function RedeemModal(props: ModalProps) {
               <Grid item xs={8} sx={{ fontSize: "25px", height: "100%" }}>
                 <Box> {props.data?.asset.name}</Box>
                 <Box> {props.data?.asset.projectName}</Box>
-                <Box>{props.data?.lentPrice} ETH</Box>
-                <Box>{props.data?.collateral} ETH</Box>
+                <Box>
+                  {ethers.utils.formatEther(`${props.data?.lentPrice}`)} ETH
+                </Box>
+                <Box>
+                  {ethers.utils.formatEther(`${props.data?.collateral}`)} ETH
+                </Box>
               </Grid>
             </Grid>
           </Grid>

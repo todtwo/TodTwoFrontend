@@ -40,7 +40,7 @@ export default function LendModal(props: LendModalProps) {
   const { TodTwoContract, AddressToContract } = useContext(EthContext);
 
   async function confirmLend() {
-    if (collateral && lendingDuration && lendingPrice) {
+    if (collateral && lendingPrice) {
       console.log(props.data?.address);
       const contract = AddressToContract[props.data?.address as string];
       console.log(contract);
@@ -52,7 +52,6 @@ export default function LendModal(props: LendModalProps) {
             props.data?.tokenId
           );
           const receipt = await x.wait();
-          console.log("REC", receipt);
         }
 
         const res = await TodTwoContract.lendNFT(
@@ -60,7 +59,7 @@ export default function LendModal(props: LendModalProps) {
           props.data?.tokenId,
           ethers.utils.parseEther(`${collateral}`),
           ethers.utils.parseEther(`${lendingPrice}`),
-          lendingDuration * 86400
+          lendingDuration! * 86400
         );
 
         if (res) {

@@ -35,7 +35,7 @@ function createData(data: NFTDataWithDetails): BorrowedDashboardData {
     borrowedPrice: +data.condition.borrowFee,
     lendingDuration: +data.condition.lendingDuration,
     returnable: true,
-    tokenId: +data.nftIdx,
+    tokenId: +data.tokenId,
   };
 }
 

@@ -24,7 +24,6 @@ import { LentDashboardData } from "../../types/TableData";
 import { ethers } from "ethers";
 
 function createData(data: NFTDataWithDetails): LentDashboardData {
-  console.log("data", data);
   return {
     asset: {
       name: data.name,

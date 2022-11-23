@@ -8,6 +8,7 @@ import { BorrowedDashboardData } from "../../types/TableData";
 import Image from "next/image";
 import { EthContext } from "../../../context/EthContext";
 import { BigNumber } from "ethers";
+import { ethers } from "ethers";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,13 +31,31 @@ interface returnModalProps {
 }
 
 export default function ReturnModal(props: returnModalProps) {
-  const { TodTwoContract } = React.useContext(EthContext);
+  const { TodTwoContract, AddressToContract } = React.useContext(EthContext);
 
-  const handleReturn = () => {
-    TodTwoContract.returnNFT(
-      props.data?.projectAddress,
-      BigNumber.from(props.data?.tokenId)
-    );
+  const handleReturn = async () => {
+    try {
+      const contract = AddressToContract[props.data?.projectAddress as string];
+      const checkApproval = await contract.getApproved(props.data?.tokenId);
+      if (checkApproval !== TodTwoContract.address) {
+        const x = await contract.approve(
+          TodTwoContract.address,
+          props.data?.tokenId
+        );
+        const receipt = await x.wait();
+      }
+
+      const res = await TodTwoContract.returnNFT(
+        props.data?.projectAddress,
+        BigNumber.from(props.data?.tokenId)
+      );
+
+      if (res) {
+        props.handleCancel();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,8 +93,13 @@ export default function ReturnModal(props: returnModalProps) {
                 <Box> {props.data?.asset.name}</Box>
                 <Box> {props.data?.asset.projectName}</Box>
                 <Box>{props.data?.lender}</Box>
-                <Box>{props.data?.borrowedPrice} ETH</Box>
-                <Box>{props.data?.collateral} ETH</Box>
+                <Box>
+                  {" "}
+                  {ethers.utils.formatEther(`${props.data?.borrowedPrice}`)}ETH
+                </Box>
+                <Box>
+                  {ethers.utils.formatEther(`${props.data?.collateral}`)}ETH
+                </Box>
               </Grid>
             </Grid>
           </Grid>
