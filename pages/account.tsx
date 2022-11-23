@@ -6,7 +6,7 @@ import { Button, Grid, Tab, Slide, Tabs, Fade } from "@mui/material";
 import BorrowedTable from "../components/account/borrow/BorrowedTable";
 import LendTable from "../components/account/lend/LendTable";
 import Navbar from "../components/Navbar";
-import { EthContext } from "../context/ethContext";
+import { EthContext } from "../context/EthContext";
 import { NftDetails } from "../types/NftDetails";
 import { NftStatus } from "../types/NftStatus";
 import {
@@ -14,78 +14,57 @@ import {
   mergeObject,
   NFTDataWithDetails,
 } from "../utils/GetNFTDetails";
+import { useRouter } from "next/router";
+
 enum AccountTab {
   lent = "Lent",
   borrowed = "Borrowed",
 }
 
-const mock: NftDetails = {
-  nftLPListIdx: "2",
-  nftAddress: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
-  nftIdx: "0",
-  lender: "0xlender1",
-  collateralFee: (9 * 10 ** 18).toString(),
-  borrowFee: (7 * 10 ** 17).toString(),
-  lendingDuration: 20,
-  deadline: new Date(1700000000000),
-  nftStatus: NftStatus.AVAILABLE,
-};
-const mock2: NftDetails = {
-  nftLPListIdx: "2",
-  nftAddress: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
-  nftIdx: "0",
-  lender: "0xlender12",
-  collateralFee: (1 * 10 ** 18).toString(),
-  borrowFee: (7 * 10 ** 17).toString(),
-  lendingDuration: 20,
-  deadline: new Date(1700000000000),
-  nftStatus: NftStatus.BEING_BORROWED,
-};
-
 export default function Account() {
-  const [account, setAccount] = useState<string>("0x123422343");
+  const [account, setAccount] = useState<string>();
   const [selectedTab, setSelectedTab] = useState<AccountTab>();
   const [borrowed, setBorrowed] = useState<NFTDataWithDetails[]>([]);
   const [lent, setLent] = useState<NFTDataWithDetails[]>([]);
+  const router = useRouter();
 
-  const {
-    provider,
-    defaultAccount,
-    setDefaultAccount,
-    connectHandle,
-    contract,
-    TodTwoContract,
-  } = useContext(EthContext);
+  const { defaultAccount, isReady, TodTwoContract } = useContext(EthContext);
 
   async function callData() {
-    // let lent = await TodTwoContract.viewUserLentProfile(account);
-    let lent: NftDetails[] = [mock, mock2];
-    // let borrowed = await TodTwoContract.viewUserBorrowedProfile(account);
+    const lent = await TodTwoContract.viewUserLentProfile(account);
+
     const lentNftDetails = await GetNFTDetails(lent);
     const lentNftDatawithDetails = mergeObject(lent, lentNftDetails).filter(
       (e) => e.nftStatus !== NftStatus.DELETED
     );
+
     setLent(lentNftDatawithDetails);
 
-    let borrowed: NftDetails[] = [mock, mock2];
-
+    const borrowed = await TodTwoContract.viewUserBorrowedProfile(account);
     const borrowedNftDetails = await GetNFTDetails(borrowed);
     const borrowedNftDatawithDetails = mergeObject(
       borrowed,
       borrowedNftDetails
     ).filter((e) => e.nftStatus !== NftStatus.DELETED);
+
     setBorrowed(borrowedNftDatawithDetails);
   }
 
   useEffect(() => {
     setSelectedTab(AccountTab.borrowed);
-    callData();
   }, []);
+
+  useEffect(() => {
+    if (account) callData();
+  }, [account]);
 
   useEffect(() => {
     setAccount(defaultAccount);
   }, [defaultAccount]);
 
+  if (!isReady) {
+    return <Box>Loading</Box>;
+  }
   const tabChange = (event: React.SyntheticEvent, newValue: AccountTab) => {
     setSelectedTab(newValue);
   };

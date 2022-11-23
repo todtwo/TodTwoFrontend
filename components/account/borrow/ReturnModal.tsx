@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Grid } from "@mui/material";
 import { BorrowedDashboardData } from "../../types/TableData";
-import { EthContext } from "../../../context/ethContext";
 import Image from "next/image";
+import { EthContext } from "../../../context/EthContext";
 
 const style = {
   position: "absolute" as "absolute",

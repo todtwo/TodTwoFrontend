@@ -1,3 +1,5 @@
+import { NftStatus } from "../../types/NftStatus";
+
 interface LentDashboardData {
   asset: {
     name: string;
@@ -12,6 +14,7 @@ interface LentDashboardData {
   lendingDuration: number;
   tokenId: number;
   collateralRedeemable: boolean;
+  nftStatus: NftStatus;
 }
 
 interface BorrowedDashboardData {

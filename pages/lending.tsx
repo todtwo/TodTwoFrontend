@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { ethers } from "ethers";
 
 import {
   Table,
@@ -16,8 +17,8 @@ import {
 } from "@mui/material";
 
 import Navbar from "../components/Navbar";
-import { EthContext } from "../context/ethContext";
 import { NftDetails } from "../types/NftDetails";
+import { EthContext } from "../context/EthContext";
 import {
   GetNFTDetails,
   mergeObject,
@@ -33,36 +34,29 @@ const columns = [
   "Collateral",
   "Status",
 ];
-const mock: NftDetails = {
-  nftLPListIdx: "2",
-  nftAddress: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
-  nftIdx: "0",
-  lender: "0xlender1",
-  collateralFee: (9 * 10 ** 18).toString(),
-  borrowFee: (7 * 10 ** 17).toString(),
-  lendingDuration: 20,
-  deadline: new Date(1700000000000),
-  nftStatus: NftStatus.AVAILABLE,
-};
 export default function Lending() {
   const { defaultAccount, TodTwoContract } = useContext(EthContext);
   const [rows, setRows] = useState<NFTDataWithDetails[]>([]);
+  const [account, setAccount] = useState<string | null>(null);
 
   const router = useRouter();
 
   async function getNFTs() {
-    // let nfts: NftDetails[] = await TodTwoContract.viewUserLentProfile(
-    //   defaultAccount
-    // );
-    const nfts: NftDetails[] = [mock];
+    let nfts: NftDetails[] = await TodTwoContract.viewUserLentProfile(
+      defaultAccount
+    );
     const nftDetails = await GetNFTDetails(nfts);
     const merged = mergeObject(nfts, nftDetails);
     setRows(merged);
   }
 
   useEffect(() => {
-    getNFTs();
+    setAccount(defaultAccount);
   }, []);
+
+  useEffect(() => {
+    getNFTs();
+  }, [account]);
 
   return (
     <>
@@ -122,22 +116,33 @@ export default function Lending() {
                         }}
                       >
                         <TableCell component="th" scope="row">
+                          {" "}
                           <Fragment>
                             <Image
                               src={row.fullImgUrl}
-                              alt="idk"
-                              width={80}
-                              height={80}
+                              alt={row.name}
+                              width={120}
+                              height={120}
                             />
                           </Fragment>
                           <Box>{row.name}</Box>
                         </TableCell>
                         <TableCell>{row.projectName}</TableCell>
-                        <TableCell>{row.borrowFee}ETH</TableCell>
                         <TableCell>
-                          <Box>{row.lendingDuration} Days</Box>
+                          {ethers.utils.formatEther(row.condition.borrowFee)}{" "}
+                          ETH
                         </TableCell>
-                        <TableCell>{row.collateralFee}ETH</TableCell>
+                        <TableCell>
+                          <Box>
+                            {row.condition.lendingDuration / 86400} Days
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          {ethers.utils.formatEther(
+                            row.condition.collateralFee
+                          )}{" "}
+                          ETH
+                        </TableCell>
                         <TableCell>
                           {row.nftStatus === NftStatus.BEING_BORROWED
                             ? "Being Borrowed"

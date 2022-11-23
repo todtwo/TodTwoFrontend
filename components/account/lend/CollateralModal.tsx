@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import { LentDashboardData } from "../../types/TableData";
 import { Grid } from "@mui/material";
 import Image from "next/image";
-import { EthContext } from "../../../context/ethContext";
+import { EthContext } from "../../../context/EthContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,6 +30,7 @@ interface CollateralModalProps {
 
 export default function CollateralModal(props: CollateralModalProps) {
   const { TodTwoContract } = React.useContext(EthContext);
+
   function handleConfirm() {
     TodTwoContract.returnNFT(props.data?.projectAddress, props.data?.tokenId);
   }

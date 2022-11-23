@@ -7,8 +7,8 @@ import NFTData from "../../types/NftData";
 import { duration, Grid } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useState, useContext } from "react";
-import { EthContext } from "../../context/ethContext";
 import { ethers } from "ethers";
+import { EthContext } from "../../context/EthContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -40,23 +40,50 @@ export default function LendModal(props: LendModalProps) {
     useContext(EthContext);
 
   const getContract = (address: any) => {
-    if ((address = "")) return ClarkTwoContract;
-    if ((address = "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5"))
+    if (address === "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5") {
+      return ClarkTwoContract;
+    }
+    if (address === "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532") {
       return FahTwoContract;
-    if ((address = "")) return ThunTwoContract;
+    }
+    if (address === "0x40e3b499A062153158C90572f378132Bab6AB07B") {
+      return ThunTwoContract;
+    }
   };
 
   async function confirmLend() {
     if (collateral && lendingDuration && lendingPrice) {
       const contract = getContract(props.data?.address);
-      await contract.approve(TodTwoContract.address, props.data?.tokenId);
-      await TodTwoContract.lendNFT(
+      const checkApproval = await contract.getApproved(props.data?.tokenId);
+
+      //TODO : SimpleHash Not working D:
+      if (checkApproval !== TodTwoContract.address) {
+        const x = await contract.approve(
+          TodTwoContract.address,
+          props.data?.tokenId
+        );
+
+        console.log("X", x);
+
+        setTimeout(() => {
+          console.log("DELAYED");
+        }, 15000);
+      }
+
+      console.log("Y");
+
+      const res = await TodTwoContract.lendNFT(
         props.data?.address,
         props.data?.tokenId,
         ethers.utils.parseEther(`${collateral}`),
         ethers.utils.parseEther(`${lendingPrice}`),
-        duration
+        lendingDuration * 86400
       );
+
+      if (res) {
+        props.handleCancel();
+      }
+
       //TODO : Success
     } else {
       setShowWarning(true);

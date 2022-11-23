@@ -7,19 +7,25 @@ import { Box, Button, Fade, Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 import FilterBox from "../components/common/FilterBox";
 import { filterCheckBoxType } from "../types/filterCheckBoxType";
-import { EthContext } from "../context/ethContext";
 import NFTData from "../types/NftData";
 import LendModal from "../components/lend/LendModal";
+import { EthContext } from "../context/EthContext";
 
-const whiteListed = [
-  "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532",
-  "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
-  "0x40e3b499A062153158C90572f378132Bab6AB07B",
+const nfts = [
+  { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 0 },
+  { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 1 },
+  { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 2 },
+  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 0 },
+  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 1 },
+  // { contract: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5", tokenId: 2 },
+  // { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 0 },
+  // { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 1 },
+  // { contract: "0x40e3b499A062153158C90572f378132Bab6AB07B", tokenId: 2 },
 ];
 
-function GetNFTsByContract(contract: String) {
+function GetNFTsByContract(contract: String, tokenId: number) {
   return axios.get(
-    `https://api-testnets.simplehash.com/api/v0/nfts/ethereum-goerli/${contract}`,
+    `https://api-testnets.simplehash.com/api/v0/nfts/ethereum-goerli/${contract}/${tokenId}`,
     {
       headers: {
         "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
@@ -30,7 +36,7 @@ function GetNFTsByContract(contract: String) {
 
 export default function NewLending() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [account, setAccount] = useState<string>("0x123422343");
+  const [account, setAccount] = useState<string | null>();
   const [filters, setFilters] = useState<filterCheckBoxType>({
     nft1checked: false,
     nft2checked: false,
@@ -58,33 +64,29 @@ export default function NewLending() {
 
   function getAllOwnedNFTs(owner: String) {
     Promise.all(
-      whiteListed.map((contract) => {
-        return GetNFTsByContract(contract);
+      nfts.map((c) => {
+        return GetNFTsByContract(c.contract, c.tokenId);
       })
     ).then((results) => {
       setData(
         results
-          .map((r) => {
-            return r.data.nfts;
+          .filter((b) => {
+            return (
+              b.data?.owners[0].owner_address.toUpperCase() ===
+              owner.toUpperCase()
+            );
           })
-          .reduce((a, b) => a.concat(b))
-          .reduce((a: any, b: any) => {
-            if (
-              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase()
-            ) {
-              var x: NFTData = {
-                previewImgUrl: b.previews.image_small_url,
-                projectName: b.collection.name,
-                name: b.name,
-                fullImgUrl: b.previews.image_large_url,
-                description: b.description,
-                tokenId: b.token_id,
-                address: b.contract_address,
-              };
-              a.push(x);
-            }
-            return a;
-          }, [])
+          .map((r) => {
+            return {
+              previewImgUrl: r.data.previews.image_small_url,
+              projectName: r.data.collection.name,
+              name: r.data.name,
+              fullImgUrl: r.data.previews.image_large_url,
+              description: r.data.description,
+              tokenId: r.data.token_id,
+              address: r.data.contract_address,
+            };
+          })
       );
     });
   }
@@ -132,7 +134,7 @@ export default function NewLending() {
                 return (
                   <Box
                     key={i}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "center", marginRight: "10px" }}
                     onClick={() => onClickNFT(i)}
                   >
                     <Image

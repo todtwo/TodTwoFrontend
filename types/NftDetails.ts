@@ -6,11 +6,15 @@ interface NftDetails {
   nftAddress: WhitelistedNftAdresses;
   nftIdx: string;
   lender: string;
-  collateralFee: string;
-  borrowFee: string;
-  lendingDuration: number;
   deadline: Date;
   nftStatus: NftStatus;
+  nftTokenId: number;
+
+  condition: {
+    collateralFee: string;
+    borrowFee: string;
+    lendingDuration: number;
+  };
 }
 
 export type { NftDetails };

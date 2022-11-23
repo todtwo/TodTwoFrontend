@@ -6,7 +6,7 @@ import { NftStatus } from "../types/NftStatus";
 const GetNFTDetails = async (nfts: NftDetails[]) => {
   const url = `https://api-testnets.simplehash.com/api/v0/nfts/assets?nft_ids=${nfts.map(
     (nft) => {
-      return `,ethereum-goerli.${nft.nftAddress}.${nft.nftIdx}`;
+      return `ethereum-goerli.${nft.nftAddress}.${nft.nftTokenId},`;
     }
   )}`;
   const resp = await axios.get(url, {
@@ -29,13 +29,16 @@ interface NFTDataWithDetails {
   tokenId: number;
   address: string;
 
+  condition: {
+    collateralFee: string;
+    borrowFee: string;
+    lendingDuration: number;
+  };
   nftLPListIdx: string | string[] | undefined;
   nftAddress: string;
   nftIdx: string;
   lender: string;
-  collateralFee: string;
-  borrowFee: string;
-  lendingDuration: number;
+
   deadline: Date;
   nftStatus: NftStatus;
 }
@@ -43,7 +46,7 @@ interface NFTDataWithDetails {
 function mergeObject(a: NftDetails[], b: NFTData[]): NFTDataWithDetails[] {
   return a.map((e: NftDetails) => {
     var x: NFTData[] = b.filter((n: NFTData) => {
-      return n.tokenId.toString === e.nftIdx.toString;
+      return n.tokenId.toString() === e.nftTokenId.toString();
     });
     return { ...e, ...x[0] };
   });

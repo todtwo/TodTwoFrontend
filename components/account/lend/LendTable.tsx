@@ -20,10 +20,11 @@ import CollateralModal from "./CollateralModal";
 import { NFTDataWithDetails } from "../../../utils/GetNFTDetails";
 import { NftStatus } from "../../../types/NftStatus";
 import RedeemModal from "./RedeemNFTModal";
-import { EthContext } from "../../../context/ethContext";
 import { LentDashboardData } from "../../types/TableData";
+import { ethers } from "ethers";
 
-function createData(data: NFTDataWithDetails) {
+function createData(data: NFTDataWithDetails): LentDashboardData {
+  console.log("data", data);
   return {
     asset: {
       name: data.name,
@@ -32,13 +33,13 @@ function createData(data: NFTDataWithDetails) {
     },
     nftStatus: data.nftStatus,
     duration: 0,
-    due: data.deadline.toDateString(),
-    collateral: +data.collateralFee,
-    lentPrice: +data.borrowFee,
+    due: `${data.deadline}`,
+    collateral: +data.condition.collateralFee,
+    lentPrice: +data.condition.borrowFee,
     collateralRedeemable: false,
-    lendingDuration: +data.lendingDuration,
+    lendingDuration: +data.condition.lendingDuration,
     projectAddress: data.nftAddress,
-    tokenId: +data.nftIdx,
+    tokenId: +data.tokenId,
   };
 }
 
@@ -46,7 +47,6 @@ const columns = ["Asset", "Due (Duration)", "Lent Price", "Collateral", ""];
 
 export default function LendTable(props: { data: NFTDataWithDetails[] }) {
   const [rows, setRows] = useState<LentDashboardData[]>([]);
-  const { defaultAccount, TodTwoContract } = React.useContext(EthContext);
   const [showRedeemNFTModal, setShowRedeemNFTModal] = useState(false);
   const [showRedeemCollateralModal, setShowCollateralModal] = useState(false);
   const [selected, setSelected] = useState<LentDashboardData | null>(null);
@@ -58,6 +58,10 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
       })
     );
   }, [props.data]);
+
+  useEffect(() => {
+    console.log("rows", rows);
+  }, [rows]);
 
   return (
     <>
@@ -110,11 +114,17 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                       </TableCell>
                     ) : (
                       <TableCell>
-                        <Box>{row.lendingDuration} Days</Box>
+                        <Box> {row.lendingDuration / 86400} Days</Box>
                       </TableCell>
                     )}
-                    <TableCell>{row.lentPrice}</TableCell>
-                    <TableCell>{row.collateral}</TableCell>
+                    <TableCell>
+                      {row.lentPrice}
+                      {/* {ethers.utils.formatEther(row.lentPrice)}ETH */}
+                    </TableCell>
+                    <TableCell>
+                      {row.collateral}
+                      {/* {ethers.utils.formatEther(row.collateral)}ETH */}
+                    </TableCell>
 
                     {row.nftStatus == NftStatus.BEING_BORROWED ? (
                       <TableCell>
@@ -122,6 +132,7 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                           <Button
                             onClick={() => {
                               setSelected(row);
+                              console.log("selected", selected);
                               setShowCollateralModal(true);
                             }}
                           >
