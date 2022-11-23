@@ -19,6 +19,7 @@ import {
 import ReturnModal from "./ReturnModal";
 import { NFTDataWithDetails } from "../../../utils/GetNFTDetails";
 import { BorrowedDashboardData } from "../../types/TableData";
+import { ethers } from "ethers";
 
 function createData(data: NFTDataWithDetails): BorrowedDashboardData {
   return {
@@ -115,8 +116,14 @@ export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
                   </Box>
                 </TableCell>
 
-                <TableCell>{row.borrowedPrice}</TableCell>
-                <TableCell>{row.collateral}</TableCell>
+                <TableCell>
+                  {" "}
+                  {ethers.utils.formatEther(row.borrowedPrice)}ETH
+                </TableCell>
+                <TableCell>
+                  {" "}
+                  {ethers.utils.formatEther(row.collateral)}ETH
+                </TableCell>
                 <TableCell>
                   {row.returnable ? (
                     <Button onClick={() => handleReturn(row)}>Return</Button>
