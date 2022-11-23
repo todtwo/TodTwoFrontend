@@ -4,9 +4,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import NFTData from "../../types/NftData";
-import { Grid } from "@mui/material";
+import { duration, Grid } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { EthContext } from "../../context/ethContext";
+import { ethers } from "ethers";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,14 +30,38 @@ interface LendModalProps {
   data: NFTData | null;
 }
 
-function confirmLend() {
-  //TODO : call get approval + contract
-}
-
 export default function LendModal(props: LendModalProps) {
   const [lendingPrice, setLendingPrice] = useState<number>();
   const [lendingDuration, setLendingDuration] = useState<number>();
   const [collateral, setCollateral] = useState<number>();
+  const [showWarning, setShowWarning] = useState(false);
+
+  const { TodTwoContract, FahTwoContract, ClarkTwoContract, ThunTwoContract } =
+    useContext(EthContext);
+
+  const getContract = (address: any) => {
+    if ((address = "")) return ClarkTwoContract;
+    if ((address = "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5"))
+      return FahTwoContract;
+    if ((address = "")) return ThunTwoContract;
+  };
+
+  async function confirmLend() {
+    if (collateral && lendingDuration && lendingPrice) {
+      const contract = getContract(props.data?.address);
+      await contract.approve(TodTwoContract.address, props.data?.tokenId);
+      await TodTwoContract.lendNFT(
+        props.data?.address,
+        props.data?.tokenId,
+        ethers.utils.parseEther(`${collateral}`),
+        ethers.utils.parseEther(`${lendingPrice}`),
+        duration
+      );
+      //TODO : Success
+    } else {
+      setShowWarning(true);
+    }
+  }
 
   return (
     <Modal open={props.showModal} onClose={props.handleCancel}>
@@ -111,7 +137,18 @@ export default function LendModal(props: LendModalProps) {
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button>Confirm</Button>
+          {showWarning && (
+            <Box sx={{ color: "red" }}>
+              Please fill all lending terms before proceding
+            </Box>
+          )}
+          <Button
+            onClick={() => {
+              confirmLend();
+            }}
+          >
+            Confirm
+          </Button>
           <Button onClick={props.handleCancel}>Cancel</Button>
         </Box>
       </Box>

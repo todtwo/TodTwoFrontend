@@ -1,7 +1,7 @@
 enum NftStatus {
-    AVAILABLE,
-    BEING_BORROWED,
-    DELETED,
-  }
+  AVAILABLE,
+  BEING_BORROWED,
+  DELETED,
+}
 
-export {NftStatus}
+export { NftStatus };

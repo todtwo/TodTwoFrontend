@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import Image from "next/image";
 
@@ -16,76 +16,55 @@ import {
   Button,
 } from "@mui/material";
 
-import { BorrowedDashboardData } from "../../types/TableData";
 import ReturnModal from "./ReturnModal";
+import { NFTDataWithDetails } from "../../../utils/GetNFTDetails";
+import { BorrowedDashboardData } from "../../types/TableData";
 
-function createData(data: BorrowedDashboardData) {
+function createData(data: NFTDataWithDetails): BorrowedDashboardData {
   return {
     asset: {
       name: data.name,
-      imgUrl: data.imgUrl,
+      imgUrl: data.fullImgUrl,
       projectName: data.projectName,
     },
     lender: data.lender,
-    due: `${data.due}`,
-    duration: data.duration,
-    collateral: data.collateral,
-    borrowedPrice: data.borrowedPrice,
-    returnable: data.duration >= 0,
+    due: data.deadline.toDateString(),
+    duration: 1,
+    projectAddress: data.nftAddress,
+    collateral: +data.collateralFee,
+    borrowedPrice: +data.borrowFee,
+    lendingDuration: +data.lendingDuration,
+    returnable: true,
+    tokenId: +data.nftIdx,
   };
 }
-const mockData: BorrowedDashboardData = {
-  name: "NFT NAME",
-  imgUrl:
-    "/Users/hataipatsupanunt/cpcu/yr4_1/blockchain/TodTwoFrontend/public/test.jpg",
-  projectName: "project Name",
-  lender: "0x1233444",
-  due: "2019-20-05",
-  duration: 1,
-  collateral: 2,
-  borrowedPrice: 3,
-  returnable: true,
-};
-
-const mockData2: BorrowedDashboardData = {
-  name: "NFT NAME",
-  imgUrl:
-    "/Users/hataipatsupanunt/cpcu/yr4_1/blockchain/TodTwoFrontend/public/test.jpg",
-  projectName: "project Name",
-  lender: "0x1233444",
-  due: "2019-20-05",
-  duration: 1,
-  collateral: 2,
-  borrowedPrice: 3,
-  returnable: false,
-};
-
-const rows = [
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData2),
-];
 
 const columns = [
   "Asset",
   "Lender",
   "Due (Duration)",
-  "Collateral",
   "Borrowed Price",
+  "Collateral",
   "",
 ];
 
-export default function BorrowedTable() {
+export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selected, setSelected] = useState<null | BorrowedDashboardData>(null);
+  const [rows, setRows] = useState<BorrowedDashboardData[]>([]);
 
-  const handleReturn = () => {
-    setSelected(mockData);
+  const handleReturn = (row: BorrowedDashboardData) => {
+    setSelected(row);
     setShowModal(true);
   };
+
+  useEffect(() => {
+    setRows(
+      props.data.map((e) => {
+        return createData(e);
+      })
+    );
+  }, [props.data]);
 
   return (
     <Fade in={true} timeout={500}>
@@ -106,7 +85,7 @@ export default function BorrowedTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, i) => (
+            {rows.map((row: any, i: any) => (
               <TableRow
                 key={row.lender}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -115,9 +94,9 @@ export default function BorrowedTable() {
                   <Fragment>
                     <Image
                       src={row.asset.imgUrl}
-                      alt="idk"
-                      width={50}
-                      height={50}
+                      alt={row.asset.name}
+                      width={60}
+                      height={60}
                     />
                   </Fragment>
                   <Box>{row.asset.name}</Box>
@@ -128,15 +107,16 @@ export default function BorrowedTable() {
                   <Box>{row.due}</Box>
                   <Box color={row.returnable ? "black" : "red"}>
                     {row.returnable
-                      ? `${row.duration} day(s) left`
-                      : `${-1 * row.duration} day(s) ago`}
+                      ? `~ ${row.duration} day(s) left`
+                      : `~ ${-1 * row.duration} day(s) ago`}
                   </Box>
                 </TableCell>
-                <TableCell>{row.collateral}</TableCell>
+
                 <TableCell>{row.borrowedPrice}</TableCell>
+                <TableCell>{row.collateral}</TableCell>
                 <TableCell>
                   {row.returnable ? (
-                    <Button onClick={handleReturn}>Return</Button>
+                    <Button onClick={() => handleReturn(row)}>Return</Button>
                   ) : (
                     <Box sx={{ color: "red" }}>Cannot be returned</Box>
                   )}

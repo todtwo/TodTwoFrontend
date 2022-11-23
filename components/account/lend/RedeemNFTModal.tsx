@@ -22,13 +22,13 @@ const style = {
   padding: "40px",
 };
 
-interface CollateralModalProps {
+interface ModalProps {
   showModal: boolean;
   handleCancel: () => void;
   data: LentDashboardData | null;
 }
 
-export default function CollateralModal(props: CollateralModalProps) {
+export default function RedeemModal(props: ModalProps) {
   const { TodTwoContract } = React.useContext(EthContext);
   function handleConfirm() {
     TodTwoContract.returnNFT(props.data?.projectAddress, props.data?.tokenId);
@@ -38,7 +38,7 @@ export default function CollateralModal(props: CollateralModalProps) {
       <Box sx={style}>
         <Typography variant="h3" sx={{ marginBottom: "15px" }}>
           {" "}
-          Returning
+          Redeeming
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={4}>
@@ -60,7 +60,6 @@ export default function CollateralModal(props: CollateralModalProps) {
               >
                 <Box>Name</Box>
                 <Box>Project</Box>
-                <Box>Owner</Box>
                 <Box>Fees</Box>
                 <Box>Collateral</Box>
               </Grid>

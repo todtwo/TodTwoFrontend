@@ -38,14 +38,8 @@ export default function NewLending() {
   });
   const [data, setData] = useState<NFTData[]>([]);
   const [selectedNFT, setSelectedNFT] = useState<NFTData | null>(null);
-  const {
-    provider,
-    defaultAccount,
-    setDefaultAccount,
-    connectHandle,
-    contract,
-  } = useContext(EthContext);
-  const [listed, setListed] = useState<any[]>([]);
+  const { provider, defaultAccount, setDefaultAccount, getContract } =
+    useContext(EthContext);
 
   useEffect(() => {
     setAccount(defaultAccount);
@@ -62,18 +56,7 @@ export default function NewLending() {
     setShowModal(true);
   }
 
-  function checkAlreadyListed(obj: {
-    token_id: number;
-    address: string;
-  }): boolean {
-    return listed.includes(obj);
-  }
-
   function getAllOwnedNFTs(owner: String) {
-    //TODO : Filter only not listed
-    let listedNFTS;
-    // const listedNFTS = contract.getAllAvailableNFTs().map((e) => return {token_id : e.nftTokenId, address: e.nftAddress });
-
     Promise.all(
       whiteListed.map((contract) => {
         return GetNFTsByContract(contract);
@@ -85,13 +68,9 @@ export default function NewLending() {
             return r.data.nfts;
           })
           .reduce((a, b) => a.concat(b))
-          .reduce((a, b) => {
+          .reduce((a: any, b: any) => {
             if (
-              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase() &&
-              !checkAlreadyListed({
-                token_id: b.token_id,
-                address: b.contract_address,
-              })
+              b.owners[0].owner_address.toUpperCase() === owner.toUpperCase()
             ) {
               var x: NFTData = {
                 previewImgUrl: b.previews.image_small_url,
@@ -157,7 +136,7 @@ export default function NewLending() {
                     onClick={() => onClickNFT(i)}
                   >
                     <Image
-                      src={d.previewImgUrl}
+                      src={d.fullImgUrl}
                       width={200}
                       height={200}
                       alt={d.name}

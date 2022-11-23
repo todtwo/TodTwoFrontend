@@ -1,26 +1,34 @@
 interface LentDashboardData {
-  name: string;
-  imgUrl: string;
-  projectName: string;
-  borrower: string;
+  asset: {
+    name: string;
+    imgUrl: string;
+    projectName: string;
+  };
   due: string;
   duration: number;
+  projectAddress: string;
   collateral: number;
   lentPrice: number;
+  lendingDuration: number;
+  tokenId: number;
   collateralRedeemable: boolean;
-  // redeemable: boolean;
 }
 
 interface BorrowedDashboardData {
-  name: string;
-  imgUrl: string;
-  projectName: string;
+  asset: {
+    name: string;
+    imgUrl: string;
+    projectName: string;
+  };
   lender: string;
   due: string;
   duration: number;
+  projectAddress: string;
   collateral: number;
   borrowedPrice: number;
-  returnable: boolean;
+  lendingDuration: number;
+  returnable: true;
+  tokenId: number;
 }
 
 export type { LentDashboardData, BorrowedDashboardData };

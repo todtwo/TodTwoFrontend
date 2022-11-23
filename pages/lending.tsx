@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -16,64 +16,53 @@ import {
 } from "@mui/material";
 
 import Navbar from "../components/Navbar";
-import { LentDashboardData } from "../components/types/TableData";
-import { GetNFTsByContract } from "../utils/GetNFTsByContract";
-
-function createData(data: LentDashboardData) {
-  return {
-    asset: {
-      name: data.name,
-      imgUrl: data.imgUrl,
-      projectName: data.projectName,
-    },
-    borrower: data.borrower,
-    duration: data.duration,
-    due: data.due,
-    collateral: data.collateral,
-    lentPrice: data.lentPrice,
-  };
-}
-
-const mockData: LentDashboardData = {
-  name: "NFT NAME",
-  imgUrl:
-    "/Users/hataipatsupanunt/cpcu/yr4_1/blockchain/TodTwoFrontend/public/test.jpg",
-  projectName: "project Name",
-  borrower: "0x1233444",
-  due: "2019-20-05",
-  duration: 1,
-  collateral: 2,
-  lentPrice: 3,
-};
-const rows = [
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-];
+import { EthContext } from "../context/ethContext";
+import { NftDetails } from "../types/NftDetails";
+import {
+  GetNFTDetails,
+  mergeObject,
+  NFTDataWithDetails,
+} from "../utils/GetNFTDetails";
+import { NftStatus } from "../types/NftStatus";
 
 const columns = [
   "Asset",
-  "Lender",
-  "Due (Duration)",
-  "Collateral",
+  "Project",
   "Lent Price",
+  "Duration",
+  "Collateral",
+  "Status",
 ];
-
-function getListedNFTs(owner: string): LentDashboardData[] {
-  //contract.vail.filter((owner == =owner))
-  return [];
-}
-
+const mock: NftDetails = {
+  nftLPListIdx: "2",
+  nftAddress: "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5",
+  nftIdx: "0",
+  lender: "0xlender1",
+  collateralFee: (9 * 10 ** 18).toString(),
+  borrowFee: (7 * 10 ** 17).toString(),
+  lendingDuration: 20,
+  deadline: new Date(1700000000000),
+  nftStatus: NftStatus.AVAILABLE,
+};
 export default function Lending() {
+  const { defaultAccount, TodTwoContract } = useContext(EthContext);
+  const [rows, setRows] = useState<NFTDataWithDetails[]>([]);
+
   const router = useRouter();
+
+  async function getNFTs() {
+    // let nfts: NftDetails[] = await TodTwoContract.viewUserLentProfile(
+    //   defaultAccount
+    // );
+    const nfts: NftDetails[] = [mock];
+    const nftDetails = await GetNFTDetails(nfts);
+    const merged = mergeObject(nfts, nftDetails);
+    setRows(merged);
+  }
+
+  useEffect(() => {
+    getNFTs();
+  }, []);
 
   return (
     <>
@@ -99,7 +88,7 @@ export default function Lending() {
             padding: "20px",
           }}
         >
-          Current Listing
+          Your current Listing
           <Button
             onClick={() => {
               router.push(`/new-lending`);
@@ -125,7 +114,6 @@ export default function Lending() {
                 </TableHead>
                 <TableBody>
                   {rows.map((row, i) => {
-                    const returnable = row.duration >= 0;
                     return (
                       <TableRow
                         key={Math.round(Math.random() * 123213)}
@@ -136,40 +124,30 @@ export default function Lending() {
                         <TableCell component="th" scope="row">
                           <Fragment>
                             <Image
-                              src={row.asset.imgUrl}
+                              src={row.fullImgUrl}
                               alt="idk"
-                              width={50}
-                              height={50}
+                              width={80}
+                              height={80}
                             />
                           </Fragment>
-                          <Box>{row.asset.name}</Box>
-                          <Box sx={{ color: "darkgrey" }}>
-                            {row.asset.projectName}
-                          </Box>
+                          <Box>{row.name}</Box>
                         </TableCell>
-                        <TableCell>{row.borrower}</TableCell>
+                        <TableCell>{row.projectName}</TableCell>
+                        <TableCell>{row.borrowFee}ETH</TableCell>
                         <TableCell>
-                          <Box>{row.due}</Box>
-                          <Box color={returnable ? "black" : "red"}>
-                            {returnable
-                              ? `${row.duration} day(s) left`
-                              : `${-1 * row.duration} day(s) ago`}
-                          </Box>
+                          <Box>{row.lendingDuration} Days</Box>
                         </TableCell>
-                        <TableCell>{row.collateral}</TableCell>
-                        <TableCell>{row.lentPrice}</TableCell>
+                        <TableCell>{row.collateralFee}ETH</TableCell>
+                        <TableCell>
+                          {row.nftStatus === NftStatus.BEING_BORROWED
+                            ? "Being Borrowed"
+                            : "Available"}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
                 </TableBody>
               </Table>
-              {/* {showModal && (
-            <CollateralModal
-              totalCollaterals={2}
-              showModal={showModal}
-              handleCancel={() => setShowModal(false)}
-            />
-          )} */}
             </TableContainer>
           </Fade>
         </Box>
