@@ -65,7 +65,10 @@ interface NFTDataWithDetails {
 function mergeObject(a: any[], b: NFTData[]): NFTDataWithDetails[] {
   return a.map((e: any) => {
     var x: NFTData[] = b.filter((n: NFTData) => {
-      return n.tokenId.toString() === e.nftTokenId.toString();
+      return (
+        n.tokenId.toString() === e.nftTokenId.toString() &&
+        n.address.toString() === e.nftAddress.toString()
+      );
     });
     return { ...e, ...x[0] };
   });
@@ -78,7 +81,6 @@ function mergeObjectV2(a: any[], b: NFTData[]): NFTDataWithDetails[] {
         e.nftId.toString().toUpperCase()
       );
     });
-    console.log("X", x);
     return { ...e, ...x[0] };
   });
 }
