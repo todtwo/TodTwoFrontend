@@ -5,16 +5,11 @@ import { EthContext } from "../context/EthContext";
 
 interface PropTypes {
   selectedTab?: boolean | string;
-  
 }
 
 function Navbar({ selectedTab = false }: PropTypes) {
   const [selectedNav, setSelectedNav] = useState<boolean | string>(selectedTab);
-  const {
-    defaultAccount,
-    setDefaultAccount,
-    
-  } = useContext(EthContext);
+  const { defaultAccount, setDefaultAccount } = useContext(EthContext);
   const handleNavChange = (
     event: React.SyntheticEvent,
     newValue: boolean | string
@@ -40,7 +35,7 @@ function Navbar({ selectedTab = false }: PropTypes) {
     } else {
     }
   };
-  
+
   return (
     <Stack
       direction="row"
@@ -78,12 +73,6 @@ function Navbar({ selectedTab = false }: PropTypes) {
           label="Borrow"
           onClick={navigate("/borrow")}
         />
-        {/* <Tab
-          sx={{ fontSize: "1rem", color: "#FFFDF1" }}
-          value="About"
-          label="About"
-          onClick={navigate("/about")}
-        /> */}
         {defaultAccount ? (
           <Tab
             sx={{ fontSize: "1rem", color: "#FFFDF1" }}

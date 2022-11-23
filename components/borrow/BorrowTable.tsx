@@ -38,116 +38,117 @@ const BorrowTable = ({}: propTypes) => {
     return { nftIdx, projectName, lender, terms, collateral };
   };
   const [rows, setRows] = useState([
-    createData(
-      "address1",
-      "223",
-      "0xLender1",
-      800000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address1",
-      "224",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address2",
-      "223",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address2",
-      "224",
-      "0xLender2",
-      8000000000000,
-      90000000000,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "223",
-      "0xLender1",
-      8000000000000,
-      90000000000,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "224",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "225",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "226",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "227",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "228",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
-    createData(
-      "address3",
-      "229",
-      "0xLender1",
-      8000000000000,
-      9999999999,
-      3,
-      1234,
-      NftStatus.AVAILABLE
-    ),
+    //   createData(
+    //     "address1",
+    //     "223",
+    //     "0xLender1",
+    //     800000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address1",
+    //     "224",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address2",
+    //     "223",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address2",
+    //     "224",
+    //     "0xLender2",
+    //     8000000000000,
+    //     90000000000,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "223",
+    //     "0xLender1",
+    //     8000000000000,
+    //     90000000000,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "224",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "225",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "226",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "227",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "228",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    //   createData(
+    //     "address3",
+    //     "229",
+    //     "0xLender1",
+    //     8000000000000,
+    //     9999999999,
+    //     3,
+    //     1234,
+    //     NftStatus.AVAILABLE
+    //   ),
+    // ]);
   ]);
   return (
     <Box>

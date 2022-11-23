@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import Image from "next/image";
 
@@ -16,66 +16,51 @@ import {
   Fade,
 } from "@mui/material";
 
-import { LentDashboardData } from "../../types/TableData";
 import CollateralModal from "./CollateralModal";
+import { NFTDataWithDetails } from "../../../utils/GetNFTDetails";
+import { NftStatus } from "../../../types/NftStatus";
+import RedeemModal from "./RedeemNFTModal";
+import { EthContext } from "../../../context/ethContext";
+import { LentDashboardData } from "../../types/TableData";
 
-function createData(data: LentDashboardData) {
+function createData(data: NFTDataWithDetails) {
   return {
     asset: {
       name: data.name,
-      imgUrl: data.imgUrl,
+      imgUrl: data.fullImgUrl,
       projectName: data.projectName,
     },
-    borrower: data.borrower,
-    duration: data.duration,
-    due: data.due,
-    collateral: data.collateral,
-    lentPrice: data.lentPrice,
+    nftStatus: data.nftStatus,
+    duration: 0,
+    due: data.deadline.toDateString(),
+    collateral: +data.collateralFee,
+    lentPrice: +data.borrowFee,
+    collateralRedeemable: false,
+    lendingDuration: +data.lendingDuration,
+    projectAddress: data.nftAddress,
+    tokenId: +data.nftIdx,
   };
 }
 
-const mockData: LentDashboardData = {
-  name: "NFT NAME",
-  imgUrl:
-    "/Users/hataipatsupanunt/cpcu/yr4_1/blockchain/TodTwoFrontend/public/test.jpg",
-  projectName: "project Name",
-  borrower: "0x1233444",
-  due: "2019-20-05",
-  duration: 1,
-  collateral: 2,
-  lentPrice: 3,
-};
-const rows = [
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-  createData(mockData),
-];
+const columns = ["Asset", "Due (Duration)", "Lent Price", "Collateral", ""];
 
-const columns = [
-  "Asset",
-  "Borrower",
-  "Due (Duration)",
-  "Collateral",
-  "Lent Price",
-];
+export default function LendTable(props: { data: NFTDataWithDetails[] }) {
+  const [rows, setRows] = useState<LentDashboardData[]>([]);
+  const { defaultAccount, TodTwoContract } = React.useContext(EthContext);
+  const [showRedeemNFTModal, setShowRedeemNFTModal] = useState(false);
+  const [showRedeemCollateralModal, setShowCollateralModal] = useState(false);
+  const [selected, setSelected] = useState<LentDashboardData | null>(null);
 
-export default function LendTable() {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  useEffect(() => {
+    setRows(
+      props.data.map((e) => {
+        return createData(e);
+      })
+    );
+  }, [props.data]);
 
-  const handleReturn = () => {
-    setShowModal(true);
-  };
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Collect laterals</Button>
       <Fade in={true} timeout={500}>
         <TableContainer component={Paper} sx={{ height: "60vh" }}>
           <Table
@@ -93,7 +78,7 @@ export default function LendTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, i) => {
+              {rows.map((row: any, _: any) => {
                 const returnable = row.duration >= 0;
                 return (
                   <TableRow
@@ -104,9 +89,9 @@ export default function LendTable() {
                       <Fragment>
                         <Image
                           src={row.asset.imgUrl}
-                          alt="idk"
-                          width={50}
-                          height={50}
+                          alt={row.asset.name}
+                          width={60}
+                          height={60}
                         />
                       </Fragment>
                       <Box>{row.asset.name}</Box>
@@ -114,27 +99,67 @@ export default function LendTable() {
                         {row.asset.projectName}
                       </Box>
                     </TableCell>
-                    <TableCell>{row.borrower}</TableCell>
-                    <TableCell>
-                      <Box>{row.due}</Box>
-                      <Box color={returnable ? "black" : "red"}>
-                        {returnable
-                          ? `${row.duration} day(s) left`
-                          : `${-1 * row.duration} day(s) ago`}
-                      </Box>
-                    </TableCell>
-                    <TableCell>{row.collateral}</TableCell>
+                    {row.nftStatus == NftStatus.BEING_BORROWED ? (
+                      <TableCell>
+                        <Box>{row.due}</Box>
+                        <Box color={returnable ? "black" : "red"}>
+                          {returnable
+                            ? `~ ${row.duration} day(s) left`
+                            : `~ ${-1 * row.duration} day(s) ago`}
+                        </Box>
+                      </TableCell>
+                    ) : (
+                      <TableCell>
+                        <Box>{row.lendingDuration} Days</Box>
+                      </TableCell>
+                    )}
                     <TableCell>{row.lentPrice}</TableCell>
+                    <TableCell>{row.collateral}</TableCell>
+
+                    {row.nftStatus == NftStatus.BEING_BORROWED ? (
+                      <TableCell>
+                        {row.collateralRedeemable ? (
+                          <Button
+                            onClick={() => {
+                              setSelected(row);
+                              setShowCollateralModal(true);
+                            }}
+                          >
+                            Collect collateral
+                          </Button>
+                        ) : (
+                          <Box>Being Borrowed</Box>
+                        )}
+                      </TableCell>
+                    ) : (
+                      <TableCell>
+                        <Button
+                          onClick={() => {
+                            setSelected(row);
+                            setShowRedeemNFTModal(true);
+                          }}
+                        >
+                          Redeem NFT
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
-          {showModal && (
+          {showRedeemCollateralModal && (
             <CollateralModal
-              totalCollaterals={2}
-              showModal={showModal}
-              handleCancel={() => setShowModal(false)}
+              showModal={showRedeemCollateralModal}
+              handleCancel={() => setShowCollateralModal(false)}
+              data={selected}
+            />
+          )}
+          {showRedeemNFTModal && (
+            <RedeemModal
+              showModal={showRedeemNFTModal}
+              handleCancel={() => setShowRedeemNFTModal(false)}
+              data={selected}
             />
           )}
         </TableContainer>
