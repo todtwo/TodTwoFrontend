@@ -36,41 +36,20 @@ export default function LendModal(props: LendModalProps) {
   const [collateral, setCollateral] = useState<number>();
   const [showWarning, setShowWarning] = useState(false);
 
-  const { TodTwoContract, FahTwoContract, ClarkTwoContract, ThunTwoContract } =
-    useContext(EthContext);
-
-  const getContract = (address: any) => {
-    if (address === "0xFA6b6B5Eb53F951Bc4CfC607DbeC230DDE638eD5") {
-      return ClarkTwoContract;
-    }
-    if (address === "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532") {
-      return FahTwoContract;
-    }
-    if (address === "0x40e3b499A062153158C90572f378132Bab6AB07B") {
-      return ThunTwoContract;
-    }
-  };
+  const { TodTwoContract, AddressToContract } = useContext(EthContext);
 
   async function confirmLend() {
     if (collateral && lendingDuration && lendingPrice) {
-      const contract = getContract(props.data?.address);
+      const contract = AddressToContract(props.data?.address);
       const checkApproval = await contract.getApproved(props.data?.tokenId);
-
-      //TODO : SimpleHash Not working D:
       if (checkApproval !== TodTwoContract.address) {
         const x = await contract.approve(
           TodTwoContract.address,
           props.data?.tokenId
         );
-
-        console.log("X", x);
-
-        setTimeout(() => {
-          console.log("DELAYED");
-        }, 15000);
+        const receipt = await x.wait();
+        console.log("REC", receipt);
       }
-
-      console.log("Y");
 
       const res = await TodTwoContract.lendNFT(
         props.data?.address,
@@ -83,8 +62,6 @@ export default function LendModal(props: LendModalProps) {
       if (res) {
         props.handleCancel();
       }
-
-      //TODO : Success
     } else {
       setShowWarning(true);
     }
