@@ -174,7 +174,9 @@ export default function Lending() {
                         </TableCell>
                         <TableCell>{row.projectName}</TableCell>
                         <TableCell>
-                          {ethers.utils.formatEther(row.condition.borrowFee)}{" "}
+                          {ethers.utils.formatEther(
+                            `${row.condition.borrowFee}`
+                          )}{" "}
                           ETH
                         </TableCell>
                         <TableCell>
@@ -184,7 +186,7 @@ export default function Lending() {
                         </TableCell>
                         <TableCell>
                           {ethers.utils.formatEther(
-                            row.condition.collateralFee
+                            `${row.condition.collateralFee}`
                           )}{" "}
                           ETH
                         </TableCell>

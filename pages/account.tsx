@@ -17,8 +17,8 @@ import {
 import { useRouter } from "next/router";
 
 enum AccountTab {
-  lent = "Lent",
-  borrowed = "Borrowed",
+  lent = "Lending",
+  borrowed = "Borrowing",
 }
 
 export default function Account() {

@@ -113,10 +113,10 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                       </TableCell>
                     )}
                     <TableCell>
-                      {ethers.utils.formatEther(row.lentPrice)}ETH
+                      {ethers.utils.formatEther(`${row.lentPrice}`)}ETH
                     </TableCell>
                     <TableCell>
-                      {ethers.utils.formatEther(row.collateral)}ETH
+                      {ethers.utils.formatEther(`${row.collateral}`)}ETH
                     </TableCell>
 
                     {row.nftStatus == NftStatus.BEING_BORROWED ? (
