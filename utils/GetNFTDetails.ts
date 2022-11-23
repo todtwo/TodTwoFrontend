@@ -38,8 +38,10 @@ interface NFTDataWithDetails {
   nftAddress: string;
   nftIdx: string;
   lender: string;
-
-  deadline: Date;
+  // collateralFee: string;
+  // borrowFee: string;
+  // lendingDuration: number;
+  deadline: number;
   nftStatus: NftStatus;
 }
 

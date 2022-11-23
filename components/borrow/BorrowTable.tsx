@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,143 +13,28 @@ import { Box } from "@mui/material";
 import { WhitelistedNftAdresses } from "../../types/WhitelistedNftAdresses";
 import { NftStatus } from "../../types/NftStatus";
 import { EthContext } from "../../context/EthContext";
+import { NftDetails } from "../../types/NftDetails";
 
-interface propTypes {}
+interface propTypes {
+  nftDetailsList:Array<NftDetails>
+}
 
-const BorrowTable = ({}: propTypes) => {
+const BorrowTable = ({nftDetailsList}: propTypes) => {
   const router = useRouter();
   const { AddressToProjectMap } = useContext(EthContext);
-  const createData = (
-    nftAddress: WhitelistedNftAdresses,
-    nftIdx: string,
-    lender: string,
-    collateralFee: number,
-    borrowFee: number,
-    lendingDuration: number,
-    deadline: number,
-    nftStatus: NftStatus
+
+  const createData = (nftDetails:NftDetails
   ) => {
-    const projectName: string = AddressToProjectMap[nftAddress];
+    const projectName: string = AddressToProjectMap[nftDetails.nftAddress];
     const terms: string = `${ethers.utils.formatEther(
-      borrowFee
-    )}Eth/${lendingDuration}Day`;
-    const collateral: string = `${ethers.utils.formatEther(collateralFee)}ETH`;
+      nftDetails.borrowFee
+    )}Eth/${nftDetails.lendingDuration/3600/24}Days`;
+    const collateral: string = `${ethers.utils.formatEther(nftDetails.collateralFee)}ETH`;
     const imgPath: string = "/vercel.svg";
-    return { nftIdx, projectName, lender, terms, collateral };
+    return { nftIdx:nftDetails.nftIdx, projectName, lender:nftDetails.lender, terms, collateral, nftLPListIdx:nftDetails.nftLPListIdx };
   };
-  const [rows, setRows] = useState([
-    //   createData(
-    //     "address1",
-    //     "223",
-    //     "0xLender1",
-    //     800000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address1",
-    //     "224",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address2",
-    //     "223",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address2",
-    //     "224",
-    //     "0xLender2",
-    //     8000000000000,
-    //     90000000000,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "223",
-    //     "0xLender1",
-    //     8000000000000,
-    //     90000000000,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "224",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "225",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "226",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "227",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "228",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    //   createData(
-    //     "address3",
-    //     "229",
-    //     "0xLender1",
-    //     8000000000000,
-    //     9999999999,
-    //     3,
-    //     1234,
-    //     NftStatus.AVAILABLE
-    //   ),
-    // ]);
-  ]);
+  const rows = useMemo(()=>nftDetailsList.map((nftDetails) => createData(nftDetails)),[nftDetailsList]);
+
   return (
     <Box>
       <TableContainer
@@ -193,7 +78,7 @@ const BorrowTable = ({}: propTypes) => {
                 key={`${row.projectName}#${row.nftIdx}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 onClick={() => {
-                  router.push(`/borrow/123`);
+                  router.push(`/borrow/${row.nftLPListIdx}`);
                 }}
               >
                 <TableCell align="center">{row.nftIdx}</TableCell>

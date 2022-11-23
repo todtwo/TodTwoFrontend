@@ -1,23 +1,17 @@
 import { NftStatus } from "./NftStatus";
 import { WhitelistedNftAdresses } from "./WhitelistedNftAdresses";
 
-interface NftDetails {
+interface NftDetailsWithImg{
   nftLPListIdx: string | string[] | undefined;
   nftAddress: WhitelistedNftAdresses;
   nftIdx: string;
   lender: string;
-  // collateralFee: string;
-  // borrowFee: string;
-  // lendingDuration: number;
+  collateralFee: string;
+  borrowFee: string;
+  lendingDuration: number;
   deadline: number;
   nftStatus: NftStatus;
-  nftTokenId: number;
-
-  condition: {
-    collateralFee: string;
-    borrowFee: string;
-    lendingDuration: number;
-  };
+  imgPath: string
 }
 
-export type { NftDetails };
+export type { NftDetailsWithImg };
