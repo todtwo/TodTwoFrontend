@@ -11,7 +11,11 @@ import NFTData from "../types/NftData";
 import LendModal from "../components/lend/LendModal";
 import { EthContext } from "../context/EthContext";
 import { useRouter } from "next/router";
-import { GetNFTDetailsV2, mergeObject } from "../utils/GetNFTDetails";
+import {
+  GetNFTDetailsV2,
+  mergeObject,
+  mergeObjectV2,
+} from "../utils/GetNFTDetails";
 
 const nfts = [
   { contract: "0x13502Ea6F6D14f00025a3AdDe02BFf050be24532", tokenId: 0 },
@@ -64,7 +68,7 @@ export default function NewLending() {
   };
 
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_API_KEY);
+    // console.log(process.en v.NEXT_PUBLIC_API_KEY);
     connectHandler();
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", onAccountChangedHandler);
@@ -118,23 +122,10 @@ export default function NewLending() {
         });
 
       var details = await GetNFTDetailsV2(x);
-
-      var y = mergeObject(
-        x,
-        details.filter(
-          (item: any, index: any, array: any) =>
-            index ===
-            array.findIndex((foundItem: any) =>
-              isPropValuesEqual(foundItem, item, ["nftId"])
-            )
-        )
-      );
+      var y = mergeObjectV2(x, details);
       setData(y);
     });
   }
-
-  const isPropValuesEqual = (subject: any, target: any, propNames: any) =>
-    propNames.every((propName: any) => subject[propName] === target[propName]);
 
   return (
     <>

@@ -70,6 +70,18 @@ function mergeObject(a: any[], b: NFTData[]): NFTDataWithDetails[] {
     return { ...e, ...x[0] };
   });
 }
+function mergeObjectV2(a: any[], b: NFTData[]): NFTDataWithDetails[] {
+  return a.map((e: any) => {
+    var x: NFTData[] = b.filter((n: NFTData) => {
+      return (
+        `ethereum-goerli.${n.address}.${n.tokenId}`.toUpperCase() ===
+        e.nftId.toString().toUpperCase()
+      );
+    });
+    console.log("X", x);
+    return { ...e, ...x[0] };
+  });
+}
 
 function convertToNFTData(b: any): NFTData {
   var x: NFTData = {
@@ -84,5 +96,11 @@ function convertToNFTData(b: any): NFTData {
   return x;
 }
 
-export { GetNFTDetails, convertToNFTData, mergeObject, GetNFTDetailsV2 };
+export {
+  GetNFTDetails,
+  convertToNFTData,
+  mergeObject,
+  GetNFTDetailsV2,
+  mergeObjectV2,
+};
 export type { NFTDataWithDetails };

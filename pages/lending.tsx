@@ -23,6 +23,7 @@ import {
   GetNFTDetails,
   mergeObject,
   NFTDataWithDetails,
+  mergeObjectV2,
 } from "../utils/GetNFTDetails";
 import { NftStatus } from "../types/NftStatus";
 
