@@ -24,7 +24,7 @@ import { ethers } from "ethers";
 function createData(data: NFTDataWithDetails): BorrowedDashboardData {
   var d = new Date(data.deadline * 1000);
   var now = new Date();
-  var diffTime = Math.abs(Date.parse(`${d}`) - Date.parse(`${now}`));
+  var diffTime = Date.parse(`${d}`) - Date.parse(`${now}`);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return {
     asset: {
