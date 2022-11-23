@@ -20,6 +20,23 @@ const GetNFTDetails = async (nfts: NftDetails[]) => {
   });
 };
 
+const GetNFTDetailsV2 = async (nfts: any[]) => {
+  const url = `https://api-testnets.simplehash.com/api/v0/nfts/assets?nft_ids=${nfts.map(
+    (nft) => {
+      return `${nft.nftId},`;
+    }
+  )}`;
+  const resp = await axios.get(url, {
+    headers: {
+      "X-API-KEY":
+        "wattanatawee_sk_c6b59475-e27f-46b8-b506-57bb41e67f85_82tcdyh0wq6fyfm8",
+    },
+  });
+  return resp.data.nfts.map((e: NFTData) => {
+    return convertToNFTData(e);
+  });
+};
+
 interface NFTDataWithDetails {
   previewImgUrl: string;
   name: string;
@@ -45,8 +62,8 @@ interface NFTDataWithDetails {
   nftStatus: NftStatus;
 }
 
-function mergeObject(a: NftDetails[], b: NFTData[]): NFTDataWithDetails[] {
-  return a.map((e: NftDetails) => {
+function mergeObject(a: any[], b: NFTData[]): NFTDataWithDetails[] {
+  return a.map((e: any) => {
     var x: NFTData[] = b.filter((n: NFTData) => {
       return n.tokenId.toString() === e.nftTokenId.toString();
     });
@@ -67,5 +84,5 @@ function convertToNFTData(b: any): NFTData {
   return x;
 }
 
-export { GetNFTDetails, convertToNFTData, mergeObject };
+export { GetNFTDetails, convertToNFTData, mergeObject, GetNFTDetailsV2 };
 export type { NFTDataWithDetails };

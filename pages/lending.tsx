@@ -110,6 +110,8 @@ export default function Lending() {
           backgroundColor: "FFFDF1",
           padding: "20px",
           color: "black",
+          paddingX: "15%",
+          paddingTop: "2rem",
         }}
       >
         <h2>Lend</h2>
@@ -127,6 +129,9 @@ export default function Lending() {
             onClick={() => {
               router.push(`/new-lending`);
             }}
+            sx={{ marginLeft: "10px", marginBottom: "10px" }}
+            color="success"
+            variant="contained"
           >
             List new NFT
           </Button>

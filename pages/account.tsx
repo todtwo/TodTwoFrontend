@@ -80,6 +80,8 @@ export default function Account() {
           borderColor: "divider",
           backgroundColor: "FFFDF1",
           padding: "20px",
+          paddingX: "15%",
+          paddingTop: "2rem",
         }}
       >
         <Grid container sx={{ height: "100%" }}>

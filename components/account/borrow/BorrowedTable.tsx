@@ -68,7 +68,10 @@ export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
 
   return (
     <Fade in={true} timeout={500}>
-      <TableContainer component={Paper} sx={{ height: "60vh" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ height: "60vh", marginTop: "10px" }}
+      >
         <Table
           sx={{
             minWidth: 650,

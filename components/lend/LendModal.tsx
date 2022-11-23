@@ -81,8 +81,8 @@ export default function LendModal(props: LendModalProps) {
             {" "}
             <Image
               src={`${props.data?.fullImgUrl}`}
-              width={500}
-              height={500}
+              width={400}
+              height={400}
               alt="idkidk"
             />
           </Grid>
