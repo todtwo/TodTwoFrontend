@@ -18,7 +18,7 @@ const GetImgWithDetails = async (
         "wattanatawee_sk_c6b59475-e27f-46b8-b506-57bb41e67f85_82tcdyh0wq6fyfm8",
     },
   });
-  const imgPathList =  res.data.nfts.map((nft) : any => {
+  const imgPathList =  res.data.nfts.map((nft : any) : any => {
     if (size == "small") {
       return nft.previews.image_small_url;
     }else if(size=="medium"){

@@ -15,7 +15,7 @@ const BorrowDetails = () => {
   const router = useRouter();
   const { nftLPListIdx } = router.query;
   const [imgPath, setImgPath] = useState("");
-  const [nftDetails, setNftDetails] = useState<NftDetails>({
+  const [nftDetails, setNftDetails] = useState<any>({
     nftLPListIdx,
     nftAddress: "0x40e3b499A062153158C90572f378132Bab6AB07B",
     nftIdx: "",
@@ -83,7 +83,7 @@ const BorrowDetails = () => {
       if (nftLPListIdx && TodTwoContract) {
         try {
           const nftDetailsList = await TodTwoContract.getNFTDetails(
-            parseInt(nftLPListIdx)
+            parseInt(nftLPListIdx as string)
           );
           const tmpNftDetails: NftDetails = {
             nftLPListIdx,

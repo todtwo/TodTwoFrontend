@@ -108,7 +108,7 @@ const BorrowTable = ({ nftDetailsList, filters }: propTypes) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {rows.map((row : any, index: number) => (
               <TableRow
                 key={`${row.projectName}#${row.nftIdx}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

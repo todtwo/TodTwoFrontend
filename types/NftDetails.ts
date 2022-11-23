@@ -11,9 +11,9 @@ interface NftDetails {
   lendingDuration: number;
   deadline: number;
   nftStatus: NftStatus;
-  nftTokenId: number;
+  nftTokenId?: number;
 
-  condition:
+  condition?:
     | any
     | {
         collateralFee: string;

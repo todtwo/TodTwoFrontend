@@ -3,8 +3,8 @@ FROM node:alpine3.15
 
 COPY . .
 
-RUN yarn
+RUN npm install
 
-RUN yarn build
+RUN num run build
 
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]

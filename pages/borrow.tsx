@@ -73,9 +73,9 @@ const Borrow = () => {
       if (TodTwoContract) {
         const tmpNftDetailsList = await TodTwoContract.getAllAvailableNFTs();
         const tmpNftDetailsObjectList = tmpNftDetailsList.reduce(
-          (result, tmpDetailElement, index: number) => {
+          (result : Array<NftDetails>, tmpDetailElement: any, index: number) => {
             if (tmpDetailElement["status"] == 0) {
-              const tmpNftDetailsObject: NftDetails = {
+              const tmpNftDetailsObject: any = {
                 nftLPListIdx: index.toString(),
                 nftAddress: tmpDetailElement["nftAddress"],
                 nftIdx: tmpDetailElement["nftTokenId"].toString(),
