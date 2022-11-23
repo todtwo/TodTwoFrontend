@@ -71,8 +71,8 @@ export default function CollateralModal(props: CollateralModalProps) {
               >
                 <Box>Name</Box>
                 <Box>Project</Box>
-                <Box>Owner</Box>
-                <Box>Fees</Box>
+                <Box>Lending Price</Box>
+                <Box>Lending Duration</Box>
                 <Box>Collateral</Box>
               </Grid>
               <Grid item xs={8} sx={{ fontSize: "25px", height: "100%" }}>
@@ -81,6 +81,7 @@ export default function CollateralModal(props: CollateralModalProps) {
                 <Box>
                   {ethers.utils.formatEther(`${props.data?.lentPrice}`)} ETH
                 </Box>
+                <Box> {`${props.data!.lendingDuration / 86400}`} Days</Box>
                 <Box>
                   {ethers.utils.formatEther(`${props.data?.collateral}`)} ETH
                 </Box>

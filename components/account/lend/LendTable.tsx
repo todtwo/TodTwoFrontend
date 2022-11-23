@@ -37,7 +37,7 @@ function createData(data: NFTDataWithDetails): LentDashboardData {
     },
     nftStatus: data.status,
     duration: diffDays,
-    due: d.toLocaleString(),
+    due: d.toLocaleDateString(),
     collateral: +data.condition.collateralFee,
     lentPrice: +data.condition.borrowFee,
     collateralRedeemable: diffTime <= 0,
