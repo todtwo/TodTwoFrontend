@@ -33,7 +33,7 @@ export default function CollateralModal(props: CollateralModalProps) {
 
   async function handleConfirm() {
     try {
-      const res = await TodTwoContract.returnNFT(
+      const res = await TodTwoContract.redeemCollateral(
         props.data?.projectAddress,
         BigNumber.from(props.data?.tokenId)
       );

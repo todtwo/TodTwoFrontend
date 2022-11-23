@@ -54,10 +54,6 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
   const [showRedeemNFTModal, setShowRedeemNFTModal] = useState(false);
   const [showRedeemCollateralModal, setShowCollateralModal] = useState(false);
   const [selected, setSelected] = useState<LentDashboardData | null>(null);
-  const [selectedCollateralModal, setSelectedCollateralModal] =
-    useState<LentDashboardData | null>(null);
-  const [selectedRedeemModal, setSelectedRedeemModal] =
-    useState<LentDashboardData | null>(null);
 
   useEffect(() => {
     setRows(
@@ -133,8 +129,8 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                         {row.collateralRedeemable ? (
                           <Button
                             onClick={() => {
-                              setSelectedCollateralModal(row);
-                              // setShowCollateralModal(true);
+                              setSelected(row);
+                              setShowCollateralModal(true);
                             }}
                             color="success"
                             variant="contained"
@@ -149,8 +145,8 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
                       <TableCell>
                         <Button
                           onClick={() => {
-                            setSelectedRedeemModal(row);
-                            // setShowRedeemNFTModal(true);
+                            setSelected(row);
+                            setShowRedeemNFTModal(true);
                           }}
                           color="success"
                           variant="contained"
@@ -164,14 +160,14 @@ export default function LendTable(props: { data: NFTDataWithDetails[] }) {
               })}
             </TableBody>
           </Table>
-          {selectedCollateralModal !== null && (
+          {showRedeemCollateralModal && (
             <CollateralModal
               showModal={showRedeemCollateralModal}
               handleCancel={() => setShowCollateralModal(false)}
               data={selected}
             />
           )}
-          {selectedRedeemModal && (
+          {showRedeemNFTModal && (
             <RedeemModal
               showModal={showRedeemNFTModal}
               handleCancel={() => setShowRedeemNFTModal(false)}

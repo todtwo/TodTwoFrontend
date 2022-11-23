@@ -44,14 +44,7 @@ function createData(data: NFTDataWithDetails): BorrowedDashboardData {
   };
 }
 
-const columns = [
-  "Asset",
-  "Lender",
-  "Due (Duration)",
-  "Borrowed Price",
-  "Collateral",
-  "",
-];
+const columns = ["Asset", "Due (Duration)", "Borrowed Price", "Collateral", ""];
 
 export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -110,7 +103,6 @@ export default function BorrowedTable(props: { data: NFTDataWithDetails[] }) {
                   <Box>{row.asset.name}</Box>
                   <Box sx={{ color: "darkgrey" }}>{row.asset.projectName}</Box>
                 </TableCell>
-                <TableCell>{row.lender}</TableCell>
                 <TableCell>
                   <Box>{row.due}</Box>
                   <Box color={row.returnable ? "black" : "red"}>

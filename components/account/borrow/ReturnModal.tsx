@@ -85,14 +85,12 @@ export default function ReturnModal(props: returnModalProps) {
               >
                 <Box>Name</Box>
                 <Box>Project</Box>
-                <Box>Owner</Box>
                 <Box>Fees</Box>
                 <Box>Collateral</Box>
               </Grid>
               <Grid item xs={8} sx={{ fontSize: "25px", height: "100%" }}>
                 <Box> {props.data?.asset.name}</Box>
                 <Box> {props.data?.asset.projectName}</Box>
-                <Box>{props.data?.lender}</Box>
                 <Box>
                   {" "}
                   {ethers.utils.formatEther(`${props.data?.borrowedPrice}`)}ETH
@@ -112,11 +110,7 @@ export default function ReturnModal(props: returnModalProps) {
           >
             Confirm
           </Button>
-          <Button
-            onClick={props.handleCancel}
-            color="success"
-            variant="contained"
-          >
+          <Button onClick={props.handleCancel} variant="contained">
             Cancel
           </Button>
         </Box>
