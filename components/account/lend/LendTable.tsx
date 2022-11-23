@@ -31,6 +31,7 @@ function createData(data: LentDashboardData) {
     due: data.due,
     collateral: data.collateral,
     lentPrice: data.lentPrice,
+    collateralRedeemable: data.duration < 0,
   };
 }
 
@@ -44,6 +45,7 @@ const mockData: LentDashboardData = {
   duration: 1,
   collateral: 2,
   lentPrice: 3,
+  collateralRedeemable: true,
 };
 const rows = [
   createData(mockData),
@@ -65,6 +67,7 @@ const columns = [
   "Due (Duration)",
   "Collateral",
   "Lent Price",
+  "",
 ];
 
 export default function LendTable() {
@@ -75,7 +78,7 @@ export default function LendTable() {
   };
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Collect laterals</Button>
+      {/* <Button onClick={() => setShowModal(true)}>Collect laterals</Button> */}
       <Fade in={true} timeout={500}>
         <TableContainer component={Paper} sx={{ height: "60vh" }}>
           <Table
@@ -125,6 +128,15 @@ export default function LendTable() {
                     </TableCell>
                     <TableCell>{row.collateral}</TableCell>
                     <TableCell>{row.lentPrice}</TableCell>
+                    <TableCell>
+                      {row.collateralRedeemable ? (
+                        <Button onClick={handleReturn}>
+                          Collect collateral
+                        </Button>
+                      ) : (
+                        <Button onClick={handleReturn}>Redeem</Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 );
               })}

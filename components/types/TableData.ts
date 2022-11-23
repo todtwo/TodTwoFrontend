@@ -7,6 +7,8 @@ interface LentDashboardData {
   duration: number;
   collateral: number;
   lentPrice: number;
+  collateralRedeemable: boolean;
+  // redeemable: boolean;
 }
 
 interface BorrowedDashboardData {

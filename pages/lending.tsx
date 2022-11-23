@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
   Table,
@@ -17,7 +18,6 @@ import {
 import Navbar from "../components/Navbar";
 import { LentDashboardData } from "../components/types/TableData";
 import { GetNFTsByContract } from "../utils/GetNFTsByContract";
-import router from "next/router";
 
 function createData(data: LentDashboardData) {
   return {
@@ -73,6 +73,8 @@ function getListedNFTs(owner: string): LentDashboardData[] {
 }
 
 export default function Lending() {
+  const router = useRouter();
+
   return (
     <>
       <main>
