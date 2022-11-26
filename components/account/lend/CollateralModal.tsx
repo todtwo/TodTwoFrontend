@@ -57,8 +57,8 @@ export default function CollateralModal(props: CollateralModalProps) {
             <Image
               src={`${props.data?.asset.imgUrl}`}
               alt={`${props.data?.asset.name}`}
-              width={300}
-              height={300}
+              width={200}
+              height={200}
             />
           </Grid>
 
